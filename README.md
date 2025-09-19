@@ -1,2 +1,1 @@
-# goblinq
-Goblin Quest Unofficial
+# Goblin Quest Unofficial
