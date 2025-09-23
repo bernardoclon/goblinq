@@ -1,0 +1,106 @@
+{
+  "Actor": {
+    "types": ["clan"],
+    "templates": {
+      "base": {
+        "description": ""
+      }
+    },
+    "clan": {
+      "templates": ["base"],
+      "details": {
+        "clanName": "",
+        "dream": "",
+        "rarity": "",
+        "expertise": "",
+        "relicName": ""
+      },
+      "goblins": {
+        "goblin1": {
+          "name": "",
+          "img": "icons/svg/mystery-man.svg",
+          "health": {
+            "hp1": false,
+            "hp2": false
+          }
+        },
+        "goblin2": {
+          "name": "",
+          "img": "icons/svg/mystery-man.svg",
+          "health": {
+            "hp1": false,
+            "hp2": false
+          }
+        },
+        "goblin3": {
+          "name": "",
+          "img": "icons/svg/mystery-man.svg",
+          "health": {
+            "hp1": false,
+            "hp2": false
+          }
+        },
+        "goblin4": {
+          "name": "",
+          "img": "icons/svg/mystery-man.svg",
+          "health": {
+            "hp1": false,
+            "hp2": false
+          }
+        },
+        "goblin5": {
+          "name": "",
+          "img": "icons/svg/mystery-man.svg",
+          "health": {
+            "hp1": false,
+            "hp2": false
+          }
+        }
+      },
+      "dicePool": {
+        "value": 0,
+        "max": 10
+      },
+      "diceModifier": 0,
+      "objective": "",
+      "tasks": {
+        "task1": {
+          "name": "",
+          "levels": {
+            "level1": {"challenge": 3, "checkboxStates": [false, false, false, false]},
+            "level2": {"challenge": 3, "checkboxStates": [false, false, false, false]},
+            "level3": {"challenge": 3, "checkboxStates": [false, false, false, false]}
+          }
+        },
+        "task2": {
+          "name": "",
+          "levels": {
+            "level1": {"challenge": 3, "checkboxStates": [false, false, false, false]},
+            "level2": {"challenge": 3, "checkboxStates": [false, false, false, false]},
+            "level3": {"challenge": 3, "checkboxStates": [false, false, false, false]}
+          }
+        },
+        "task3": {
+          "name": "",
+          "levels": {
+            "level1": {"challenge": 3, "checkboxStates": [false, false, false, false]},
+            "level2": {"challenge": 3, "checkboxStates": [false, false, false, false]},
+            "level3": {"challenge": 3, "checkboxStates": [false, false, false, false]}
+          }
+        }
+      }
+    }
+  },
+  "Item": {
+    "types": ["basic"],
+    "templates": {
+      "base": {
+        "description": ""
+      }
+    },
+    "basic": {
+      "templates": ["base"],
+      "value": 0
+    }
+  }
+}

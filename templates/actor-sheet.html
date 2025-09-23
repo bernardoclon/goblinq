@@ -1,0 +1,249 @@
+<form class="goblin-quest-sheet flexcol" autocomplete="off">
+    <div class="left-panel">
+        <div class="clan-info-top">
+                <button type="button" class="collapse-button" title="Mostrar/Ocultar Tareas">
+                    <i class="fas fa-tasks"></i>
+                </button>
+                <h1 class="clan-name-input">
+                    <input name="name" type="text" value="{{actor.name}}" placeholder="Nombre del Clan Goblin"/>
+                </h1>
+                <div class="clan-details-grid">
+                    <div class="clan-details-row flexrow">
+                        <div class="form-group">
+                            <label>Sueño</label>
+                            <input type="text" name="system.details.dream" value="{{system.details.dream}}"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Rareza</label>
+                            <input type="text" name="system.details.rarity" value="{{system.details.rarity}}"/>
+                        </div>
+                    </div>
+                    <div class="clan-details-row flexrow">
+                        <div class="form-group">
+                            <label>Pericia</label>
+                            <input type="text" name="system.details.expertise" value="{{system.details.expertise}}"/>
+                        </div>
+                        <div class="form-group relic-name">
+                            <label>Reliquia Familiar</label>
+                            <input type="text" name="system.details.relicName" value="{{system.details.relicName}}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="clan-details-row flexrow">
+                    <div class="form-group dice-pool">
+                        <label># Dados</label>
+                        <div class="checkbox-group" data-max="{{system.dicePool.max}}">
+                            {{#each (range 0 system.dicePool.max) as |i|}}
+                            <input type="checkbox" name="dicePool-{{i}}" data-idx="{{i}}" {{#if (lt i (lookup ../system.dicePool 'value'))}}checked{{/if}}>
+                            {{/each}}
+                        </div>
+                        <div class="roll-button-container">
+                            <button type="button" class="roll-button">Tirada</button>
+                        </div>
+                    </div>
+                </div>
+        </div>
+
+        <nav class="sheet-tabs tabs goblin-tabs" data-group="goblins">
+            {{#each system.goblins as |goblin key|}}
+                <a class="item {{#if @first}}active{{/if}}" data-tab="{{key}}">{{goblin.name}}{{#unless goblin.name}}Goblin {{add @index 1}}{{/unless}}</a>
+            {{/each}}
+        </nav>
+
+        <section class="sheet-body goblin-details-section">
+            {{#each system.goblins as |goblin key|}}
+                <div class="tab goblin-tab {{#if @first}}active{{/if}}" data-group="goblins" data-tab="{{key}}">
+                    <div class="goblin-card flexrow">
+                        <div class="goblin-image-container">
+                            <img class="profile-img" src="{{goblin.img}}" data-edit="system.goblins.{{key}}.img" title="{{goblin.name}}" alt="Image of a Goblin"/>
+                        </div>
+                        <div class="goblin-info flexcol">
+                            <h2 class="goblin-name"><input name="system.goblins.{{key}}.name" type="text" value="{{goblin.name}}" placeholder="Nombre del Goblin"/></h2>
+                            <div class="form-group goblin-health">
+                                <label>Daño</label>
+                                <div class="checkbox-group health-checkboxes">
+                                    <input type="checkbox" data-idx="0" name="system.goblins.{{key}}.health.hp1" {{#if goblin.health.hp1}}checked{{/if}}>
+                                    <input type="checkbox" data-idx="1" name="system.goblins.{{key}}.health.hp2" {{#if goblin.health.hp2}}checked{{/if}}>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </section>
+    </div>
+    <div class="right-panel tasks-section" hidden>
+            <button type="button" class="collapse-button" title="Mostrar/Ocultar Tareas">
+                <i class="fas fa-tasks"></i>
+            </button>
+            <div class="objective-section">
+                <h2 class="objective-title"><textarea name="system.objective" style="resize: none;" placeholder="Objetivo o Misión">{{system.objective}}</textarea></h2>
+            </div>
+        <div class="task-column flexcol">
+            <h3 class="task-name"><input type="text" name="system.tasks.task1.name" value="{{system.tasks.task1.name}}" placeholder="tarea 1"/></h3>
+            {{#with system.tasks.task1.levels.level1 as |level|}}
+            <div class="task-level flexrow">
+                <label class="task-level-label">Nivel 1</label>
+                <div class="checkbox-group task-checkboxes" data-challenge-input-name="system.tasks.task1.levels.level1.challenge">
+                    {{#each level.checkboxStates as |checkedState index|}}
+                    <input type="checkbox" name="system.tasks.task1.levels.level1.checkboxStates.{{index}}" data-idx="{{index}}" {{#if (eq index 3)}}class="hidden-checkbox"{{/if}} {{#if checkedState}}checked{{/if}}>
+                    {{/each}}
+                </div>
+                <div class="challenge-group flexrow">
+                    <label class="challenge-label"># Des.</label>
+                    <select name="system.tasks.task1.levels.level1.challenge" data-dtype="Number">
+                        <option value="3" {{#if (eq level.challenge 3)}}selected{{/if}}>3</option>
+                        <option value="4" {{#if (eq level.challenge 4)}}selected{{/if}}>4</option>
+                    </select>
+                </div>
+            </div>
+            {{/with}}
+            {{#with system.tasks.task1.levels.level2 as |level|}}
+            <div class="task-level flexrow">
+                <label class="task-level-label">Nivel 2</label>
+                <div class="checkbox-group task-checkboxes" data-challenge-input-name="system.tasks.task1.levels.level2.challenge">
+                    {{#each level.checkboxStates as |checkedState index|}}
+                    <input type="checkbox" name="system.tasks.task1.levels.level2.checkboxStates.{{index}}" data-idx="{{index}}" {{#if (eq index 3)}}class="hidden-checkbox"{{/if}} {{#if checkedState}}checked{{/if}}>
+                    {{/each}}
+                </div>
+                <div class="challenge-group flexrow">
+                    <label class="challenge-label"># Des.</label>
+                    <select name="system.tasks.task1.levels.level2.challenge" data-dtype="Number">
+                        <option value="3" {{#if (eq level.challenge 3)}}selected{{/if}}>3</option>
+                        <option value="4" {{#if (eq level.challenge 4)}}selected{{/if}}>4</option>
+                    </select>
+                </div>
+            </div>
+            {{/with}}
+            {{#with system.tasks.task1.levels.level3 as |level|}}
+            <div class="task-level flexrow">
+                <label class="task-level-label">Nivel 3</label>
+                <div class="checkbox-group task-checkboxes" data-challenge-input-name="system.tasks.task1.levels.level3.challenge">
+                    {{#each level.checkboxStates as |checkedState index|}}
+                    <input type="checkbox" name="system.tasks.task1.levels.level3.checkboxStates.{{index}}" data-idx="{{index}}" {{#if (eq index 3)}}class="hidden-checkbox"{{/if}} {{#if checkedState}}checked{{/if}}>
+                    {{/each}}
+                </div>
+                <div class="challenge-group flexrow">
+                    <label class="challenge-label"># Des.</label>
+                    <select name="system.tasks.task1.levels.level3.challenge" data-dtype="Number">
+                        <option value="3" {{#if (eq level.challenge 3)}}selected{{/if}}>3</option>
+                        <option value="4" {{#if (eq level.challenge 4)}}selected{{/if}}>4</option>
+                    </select>
+                </div>
+            </div>
+            {{/with}}
+        </div>
+
+        <!-- Task 2 -->
+        <div class="task-column flexcol">
+            <h3 class="task-name"><input type="text" name="system.tasks.task2.name" value="{{system.tasks.task2.name}}" placeholder="tarea 2"/></h3>
+            {{#with system.tasks.task2.levels.level1 as |level|}}
+            <div class="task-level flexrow">
+                <label class="task-level-label">Nivel 1</label>
+                <div class="checkbox-group task-checkboxes" data-challenge-input-name="system.tasks.task2.levels.level1.challenge">
+                    {{#each level.checkboxStates as |checkedState index|}}
+                    <input type="checkbox" name="system.tasks.task2.levels.level1.checkboxStates.{{index}}" data-idx="{{index}}" {{#if (eq index 3)}}class="hidden-checkbox"{{/if}} {{#if checkedState}}checked{{/if}}>
+                    {{/each}}
+                </div>
+                <div class="challenge-group flexrow">
+                    <label class="challenge-label"># Des.</label>
+                    <select name="system.tasks.task2.levels.level1.challenge" data-dtype="Number">
+                        <option value="3" {{#if (eq level.challenge 3)}}selected{{/if}}>3</option>
+                        <option value="4" {{#if (eq level.challenge 4)}}selected{{/if}}>4</option>
+                    </select>
+                </div>
+            </div>
+            {{/with}}
+            {{#with system.tasks.task2.levels.level2 as |level|}}
+            <div class="task-level flexrow">
+                <label class="task-level-label">Nivel 2</label>
+                <div class="checkbox-group task-checkboxes" data-challenge-input-name="system.tasks.task2.levels.level2.challenge">
+                    {{#each level.checkboxStates as |checkedState index|}}
+                    <input type="checkbox" name="system.tasks.task2.levels.level2.checkboxStates.{{index}}" data-idx="{{index}}" {{#if (eq index 3)}}class="hidden-checkbox"{{/if}} {{#if checkedState}}checked{{/if}}>
+                    {{/each}}
+                </div>
+                <div class="challenge-group flexrow">
+                    <label class="challenge-label"># Des.</label>
+                    <select name="system.tasks.task2.levels.level2.challenge" data-dtype="Number">
+                        <option value="3" {{#if (eq level.challenge 3)}}selected{{/if}}>3</option>
+                        <option value="4" {{#if (eq level.challenge 4)}}selected{{/if}}>4</option>
+                    </select>
+                </div>
+            </div>
+            {{/with}}
+            {{#with system.tasks.task2.levels.level3 as |level|}}
+            <div class="task-level flexrow">
+                <label class="task-level-label">Nivel 3</label>
+                <div class="checkbox-group task-checkboxes" data-challenge-input-name="system.tasks.task2.levels.level3.challenge">
+                    {{#each level.checkboxStates as |checkedState index|}}
+                    <input type="checkbox" name="system.tasks.task2.levels.level3.checkboxStates.{{index}}" data-idx="{{index}}" {{#if (eq index 3)}}class="hidden-checkbox"{{/if}} {{#if checkedState}}checked{{/if}}>
+                    {{/each}}
+                </div>
+                <div class="challenge-group flexrow">
+                    <label class="challenge-label"># Des.</label>
+                    <select name="system.tasks.task2.levels.level3.challenge" data-dtype="Number">
+                        <option value="3" {{#if (eq level.challenge 3)}}selected{{/if}}>3</option>
+                        <option value="4" {{#if (eq level.challenge 4)}}selected{{/if}}>4</option>
+                    </select>
+                </div>
+            </div>
+            {{/with}}
+        </div>
+
+        <!-- Task 3 -->
+        <div class="task-column flexcol">
+            <h3 class="task-name"><input type="text" name="system.tasks.task3.name" value="{{system.tasks.task3.name}}" placeholder="tarea 3"/></h3>
+            {{#with system.tasks.task3.levels.level1 as |level|}}
+            <div class="task-level flexrow">
+                <label class="task-level-label">Nivel 1</label>
+                <div class="checkbox-group task-checkboxes" data-challenge-input-name="system.tasks.task3.levels.level1.challenge">
+                    {{#each level.checkboxStates as |checkedState index|}}
+                    <input type="checkbox" name="system.tasks.task3.levels.level1.checkboxStates.{{index}}" data-idx="{{index}}" {{#if (eq index 3)}}class="hidden-checkbox"{{/if}} {{#if checkedState}}checked{{/if}}>
+                    {{/each}}
+                </div>
+                <div class="challenge-group flexrow">
+                    <label class="challenge-label"># Des.</label>
+                    <select name="system.tasks.task3.levels.level1.challenge" data-dtype="Number">
+                        <option value="3" {{#if (eq level.challenge 3)}}selected{{/if}}>3</option>
+                        <option value="4" {{#if (eq level.challenge 4)}}selected{{/if}}>4</option>
+                    </select>
+                </div>
+            </div>
+            {{/with}}
+            {{#with system.tasks.task3.levels.level2 as |level|}}
+            <div class="task-level flexrow">
+                <label class="task-level-label">Nivel 2</label>
+                <div class="checkbox-group task-checkboxes" data-challenge-input-name="system.tasks.task3.levels.level2.challenge">
+                    {{#each level.checkboxStates as |checkedState index|}}
+                    <input type="checkbox" name="system.tasks.task3.levels.level2.checkboxStates.{{index}}" data-idx="{{index}}" {{#if (eq index 3)}}class="hidden-checkbox"{{/if}} {{#if checkedState}}checked{{/if}}>
+                    {{/each}}
+                </div>
+                <div class="challenge-group flexrow">
+                    <label class="challenge-label"># Des.</label>
+                    <select name="system.tasks.task3.levels.level2.challenge" data-dtype="Number">
+                        <option value="3" {{#if (eq level.challenge 3)}}selected{{/if}}>3</option>
+                        <option value="4" {{#if (eq level.challenge 4)}}selected{{/if}}>4</option>
+                    </select>
+                </div>
+            </div>
+            {{/with}}
+            {{#with system.tasks.task3.levels.level3 as |level|}}
+            <div class="task-level flexrow">
+                <label class="task-level-label">Nivel 3</label>
+                <div class="checkbox-group task-checkboxes" data-challenge-input-name="system.tasks.task3.levels.level3.challenge">
+                    {{#each level.checkboxStates as |checkedState index|}}
+                    <input type="checkbox" name="system.tasks.task3.levels.level3.checkboxStates.{{index}}" data-idx="{{index}}" {{#if (eq index 3)}}class="hidden-checkbox"{{/if}} {{#if checkedState}}checked{{/if}}>
+                    {{/each}}
+                </div>
+                <div class="challenge-group flexrow">
+                    <label class="challenge-label"># Des.</label>
+                    <select name="system.tasks.task3.levels.level3.challenge" data-dtype="Number">
+                        <option value="3" {{#if (eq level.challenge 3)}}selected{{/if}}>3</option>
+                        <option value="4" {{#if (eq level.challenge 4)}}selected{{/if}}>4</option>
+                    </select>
+                </div>
+            </div>
+            {{/with}}
+        </div>
+    </div>
+</form>

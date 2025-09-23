@@ -1,0 +1,37 @@
+{
+  "id": "goblin-quest-system",
+  "title": "Goblin Quest Unofficial",
+  "description": "¡El caos y la chatarra se han unido para traer a Foundry VTT una versión no oficial y absolutamente demente de Goblin Quest!",
+  "version": "0.0.1",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "authors": [
+    {
+      "name": "Don Goblin"
+    }
+  ],
+  "packs": [],
+  "esmodules": ["module/goblin-quest-system.js", "module/pause-customizer.js"],
+  "styles": ["css/goblin-quest.css", "css/pause-customizer.css"],
+  "languages": [
+    {
+      "lang": "es",
+      "name": "Español",
+      "path": "lang/es.json"
+    },
+    {
+      "lang": "en",
+      "name": "Ingles",
+      "path": "lang/en.json"
+    }
+  ],
+  "gridDistance": 1,
+  "gridUnits": "m",
+  "primaryTokenAttribute": "health",
+  "background": "systems/goblin-quest-system/assets/banner.jpg",
+  "url": "Tu URL al repositorio (opcional)",
+  "manifest": "Tu URL al manifest (opcional)",
+  "download": "Tu URL de descarga (opcional)"
+}
