@@ -2,7 +2,7 @@
   "id": "goblin-quest-system",
   "title": "Goblin Quest Unofficial",
   "description": "¡El caos y la chatarra se han unido para traer a Foundry VTT una versión no oficial y absolutamente demente de Goblin Quest!",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "compatibility": {
     "minimum": "13",
     "verified": "13"
