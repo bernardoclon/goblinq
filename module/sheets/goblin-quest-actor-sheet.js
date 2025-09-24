@@ -15,7 +15,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             template: "systems/goblin-quest-system/templates/actor-sheet.html",
             width: 615, // Ancho inicial de la hoja
             minWidth: 615, // Ancho mínimo que la hoja puede tener al redimensionar
-            height: 710, // Reducido para mejor adaptación inicial
+            height: 715, // Reducido para mejor adaptación inicial
             tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "details"}] // Cambiado a 'details' para una pestaña más genérica
         });
     }
