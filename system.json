@@ -31,7 +31,6 @@
   "gridUnits": "m",
   "primaryTokenAttribute": "health",
   "background": "systems/goblin-quest-system/assets/banner.jpg",
-  "url": "Tu URL al repositorio (opcional)",
   "manifest": "https://raw.githubusercontent.com/bernardoclon/goblinq/refs/heads/main/system.json",
-  "download": "Tu URL de descarga (opcional)"
+  "download": "https://github.com/bernardoclon/goblinq/archive/refs/tags/V1-0.zip"
 }
