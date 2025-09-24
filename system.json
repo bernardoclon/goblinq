@@ -32,6 +32,6 @@
   "primaryTokenAttribute": "health",
   "background": "systems/goblin-quest-system/assets/banner.jpg",
   "url": "Tu URL al repositorio (opcional)",
-  "manifest": "Tu URL al manifest (opcional)",
+  "manifest": "https://raw.githubusercontent.com/bernardoclon/goblinq/refs/heads/main/system.json",
   "download": "Tu URL de descarga (opcional)"
 }
