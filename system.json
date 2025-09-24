@@ -27,8 +27,6 @@
       "path": "lang/en.json"
     }
   ],
-  "gridDistance": 1,
-  "gridUnits": "m",
   "primaryTokenAttribute": "health",
   "background": "systems/goblin-quest-system/assets/banner.jpg",
   "manifest": "https://raw.githubusercontent.com/bernardoclon/goblinq/refs/heads/main/system.json",
