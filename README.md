@@ -6,4 +6,4 @@ Este sistema, hecho por y para goblins (o al menos aquellos lo suficientemente t
 
 ![Whisk_57b7f57c1252c0d826e4e5d58b984f1edr](https://github.com/user-attachments/assets/56df195b-0433-4552-9081-219c2dd56b1f)
 
-all rights reserved "Rowan Rook and Decard".
+The Goblin Quest Unofficial system for Foundry VTT is an independent production by Bernardoclon and is not affiliated with Rowan, Rook and Decard. It is published under the RR&D Community License. Goblin Quest is copyright Rowan, Rook and Decard. You can find out more and support these games at https://rowanrookanddecard.com
