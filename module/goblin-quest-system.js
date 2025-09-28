@@ -98,6 +98,8 @@ Hooks.once("setup", function() {
                     goblin1: new fields.SchemaField({
                         name: new fields.StringField({ required: true, initial: "" }),
                         img: new fields.StringField({ required: true, initial: "icons/svg/mystery-man.svg" }),
+                        feature: new fields.StringField({ required: true, initial: "" }),
+                        causeOfDeath: new fields.StringField({ required: true, initial: "" }),
                         health: new fields.SchemaField({
                             hp1: new fields.BooleanField({ required: true, initial: false }),
                             hp2: new fields.BooleanField({ required: true, initial: false })
@@ -106,6 +108,8 @@ Hooks.once("setup", function() {
                     goblin2: new fields.SchemaField({
                         name: new fields.StringField({ required: true, initial: "" }),
                         img: new fields.StringField({ required: true, initial: "icons/svg/mystery-man.svg" }),
+                        feature: new fields.StringField({ required: true, initial: "" }),
+                        causeOfDeath: new fields.StringField({ required: true, initial: "" }),
                         health: new fields.SchemaField({
                             hp1: new fields.BooleanField({ required: true, initial: false }),
                             hp2: new fields.BooleanField({ required: true, initial: false })
@@ -114,6 +118,8 @@ Hooks.once("setup", function() {
                     goblin3: new fields.SchemaField({
                         name: new fields.StringField({ required: true, initial: "" }),
                         img: new fields.StringField({ required: true, initial: "icons/svg/mystery-man.svg" }),
+                        feature: new fields.StringField({ required: true, initial: "" }),
+                        causeOfDeath: new fields.StringField({ required: true, initial: "" }),
                         health: new fields.SchemaField({
                             hp1: new fields.BooleanField({ required: true, initial: false }),
                             hp2: new fields.BooleanField({ required: true, initial: false })
@@ -122,6 +128,8 @@ Hooks.once("setup", function() {
                     goblin4: new fields.SchemaField({
                         name: new fields.StringField({ required: true, initial: "" }),
                         img: new fields.StringField({ required: true, initial: "icons/svg/mystery-man.svg" }),
+                        feature: new fields.StringField({ required: true, initial: "" }),
+                        causeOfDeath: new fields.StringField({ required: true, initial: "" }),
                         health: new fields.SchemaField({
                             hp1: new fields.BooleanField({ required: true, initial: false }),
                             hp2: new fields.BooleanField({ required: true, initial: false })
@@ -130,6 +138,8 @@ Hooks.once("setup", function() {
                     goblin5: new fields.SchemaField({
                         name: new fields.StringField({ required: true, initial: "" }),
                         img: new fields.StringField({ required: true, initial: "icons/svg/mystery-man.svg" }),
+                        feature: new fields.StringField({ required: true, initial: "" }),
+                        causeOfDeath: new fields.StringField({ required: true, initial: "" }),
                         health: new fields.SchemaField({
                             hp1: new fields.BooleanField({ required: true, initial: false }),
                             hp2: new fields.BooleanField({ required: true, initial: false })
