@@ -3,7 +3,7 @@
 }
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Inter:wght@400;700&family=Metamorphous&display=swap');
 .goblin-quest-sheet {
-    font-family: 'Chakra Petch', sans-serif;
+    font-family: 'Metamorphous', cursive;    
     background: linear-gradient(135deg, #286C2D 0%, #1A4D1F 100%);
     border: 2px solid #3AA044;
     border-radius: 8px;
@@ -443,6 +443,7 @@
     color: #000000;
     text-shadow: none;
     margin-bottom: 0;
+    text-wrap: nowrap;
 }
 .goblin-quest-sheet .goblin-info .form-group.goblin-extra-info input[type="text"] {
     width: 100%;
