@@ -59,6 +59,14 @@
                         </div>
                         <div class="goblin-info flexcol">
                             <h2 class="goblin-name"><input name="system.goblins.{{key}}.name" type="text" value="{{goblin.name}}" placeholder="Nombre del Goblin"/></h2>
+                            <div class="form-group goblin-extra-info">
+                                <label>Caracteristica</label>
+                                <input type="text" name="system.goblins.{{key}}.feature" value="{{goblin.feature}}"/>
+                            </div>
+                            <div class="form-group goblin-extra-info">
+                                <label>Causa de la muerte</label>
+                                <input type="text" name="system.goblins.{{key}}.causeOfDeath" value="{{goblin.causeOfDeath}}"/>
+                            </div>
                             <div class="form-group goblin-health">
                                 <label>Daño</label>
                                 <div class="checkbox-group health-checkboxes">
@@ -66,6 +74,7 @@
                                     <input type="checkbox" data-idx="1" name="system.goblins.{{key}}.health.hp2" {{#if goblin.health.hp2}}checked{{/if}}>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>

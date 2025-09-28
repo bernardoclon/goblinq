@@ -15,7 +15,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             template: "systems/goblin-quest-system/templates/actor-sheet.html",
             width: 615, // Ancho inicial de la hoja
             minWidth: 615, // Ancho mínimo que la hoja puede tener al redimensionar
-            height: 715, // Reducido para mejor adaptación inicial
+            height: 750, // Reducido para mejor adaptación inicial
             tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "details"}] // Cambiado a 'details' para una pestaña más genérica
         });
     }
@@ -432,17 +432,47 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         });
         console.log("Resultados de dados individuales (con modificador aplicado y ajustado):", displayedResults);
 
-        // Formatear los resultados para mostrarlos en HTML, envueltos en un nuevo div
-        const resultsHtml = `<div class="dice-results-container">${displayedResults.map(result => `<span class="dice-result">${result}</span>`).join(' ')}</div>`;
-        
+        // --- NUEVA LÓGICA PARA EL MENSAJE DE CHAT ---
+
+        // 1. Contar éxitos y heridas
+        const successes = displayedResults.filter(r => r >= 5).length;
+        const wounds = displayedResults.filter(r => r <= 2).length;
+
+        // 2. Reemplazar números con iconos de Font Awesome
+        const diceIconMap = {
+            1: 'one',
+            2: 'two',
+            3: 'three',
+            4: 'four',
+            5: 'five',
+            6: 'six'
+        };
+
+        const diceIconsHtml = displayedResults.map(result => {
+            const icon = diceIconMap[result] || 'question';
+            return `<i class="fas fa-dice-${icon} dice-icon"></i>`;
+        }).join(' ');
+
+        const resultsHtml = `<div class="dice-results-container">${diceIconsHtml}</div>`;
+
+        // 3. Construir los mensajes de éxito y heridas
+        const successesMessage = `<div class="roll-summary success">Éxitos: ${successes}</div>`;
+        const woundsMessage = `<div class="roll-summary wound">Heridas: ${wounds}</div>`;
+
         // Formatear el modificador para mostrar +1 si es positivo
         const formattedModifier = diceModifier > 0 ? `+${diceModifier}` : diceModifier;
 
         // Crear el texto descriptivo para el mensaje de chat
-        const flavorText = `Tirada de desafío para ${this.actor.name} (Dados base: ${actualDiceToRoll}d6, Modificador aplicado a cada dado: ${formattedModifier}):<br>${resultsHtml}`;
+        const flavorText = `
+            <div class="goblin-roll">
+                El ${this.actor.name} lanza ${actualDiceToRoll} dados [Aplicando ${formattedModifier}]
+                ${resultsHtml}
+                ${successesMessage}
+                ${woundsMessage}
+            </div>
+        `;
 
         // Enviar el mensaje de tirada al chat de Foundry
-        // En v13, ChatMessage.getSpeaker se mueve a ChatMessage.implementation.getSpeaker
         roll.toMessage({
             speaker: ChatMessage.implementation.getSpeaker({ actor: this.actor }),
             flavor: flavorText

@@ -1,6 +1,7 @@
-/* css/goblin-quest.css */
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Inter:wght@400;700&display=swap');
-
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Inter:wght@400;700&family=Metamorphous&display=swap');
 .goblin-quest-sheet {
     font-family: 'Chakra Petch', sans-serif;
     background: linear-gradient(135deg, #286C2D 0%, #1A4D1F 100%);
@@ -8,25 +9,22 @@
     border-radius: 8px;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6);
     color: #E0E0E0;
-    font-size: 14px; /* Fixed font size */
+    font-size: 14px;
     display: flex;
-    flex-direction: row; /* Main layout is now row for two columns */
+    flex-direction: row;
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
-    min-width: 600px; /* Adjusted minimum width to accommodate the new flex ratios */
+    min-width: 600px;
 }
-
 .goblin-quest{
     min-width: 615px;
-    min-height: 715px;
+    min-height: 750px;
 }
-
-/* Left Panel - contains clan info, goblins, and objective */
 .goblin-quest-sheet .left-panel {
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* Allow scrolling for the left panel if content overflows */
+    overflow-y: auto;
     border-radius: 8px;
     background: #004e07;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
@@ -34,49 +32,40 @@
     justify-content: center;
     height: auto;
 }
-
-/* Right Panel (Tasks Section) */
 .goblin-quest-sheet .tasks-section {
     background: #004e07;
     border-radius: 8px;
-    padding: 10px; /* Reduced padding */
+    padding: 10px;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
     display: flex;
-    flex-direction: column; /* Tasks stacked vertically */
-    gap: 10px; /* Reduced gap between task columns */
-    overflow-y: auto; /* Allow scrolling for tasks if content overflows */
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
     align-content: center;
     justify-content: center;
 }
-
-
-/* Base input and select styling */
 .goblin-quest-sheet input[type="text"],
 .goblin-quest-sheet input[type="number"],
 .goblin-quest-sheet textarea,
 .goblin-quest-sheet select {
     background: #FFFDE7;
     border: 1px solid #689F38;
-    border-radius: 4px; /* Slightly less rounded */
-    padding: 2px 5px; /* Reduced padding */
+    border-radius: 4px;
+    padding: 2px 5px;
     font-family: 'Chakra Petch', sans-serif;
     color: #212121;
     box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
-    font-size: 14px; /* Fixed font size */
+    font-size: 14px;
 }
-
 .goblin-quest-sheet select {
     appearance: none;
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="%23212121" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
     background-repeat: no-repeat;
-    background-position: right 3px center; /* Adjusted position */
-    padding-right: 20px; /* Adjusted space */
+    background-position: right 3px center;
+    padding-right: 20px;
     padding-left: 6px;
     text-align: left;
 }
-
-
-/* Clan Header Section */
 .goblin-quest-sheet .clan-info-top {
     background: #1A4D1F;
     border-bottom: 2px solid #3AA044;
@@ -89,80 +78,67 @@
     width: 100%;
     height: 100%;
 }
-
 .goblin-quest-sheet .clan-name-input input {
     background: rgba(255, 255, 255, 0.1);
     border: 1px dashed #C5E1A5;
-    font-size: 20px; /* Fixed font size */
+    font-size: 20px;
     font-weight: 700;
     color: #E0E0E0;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
-    padding: 3px 8px; /* Reduced padding */
+    padding: 3px 8px;
     border-radius: 5px;
-    margin-bottom: 4px; /* Reduced margin */
+    margin-bottom: 4px;
     width: 100%;
     height: auto;
 }
-
-/* Utility classes */
 .goblin-quest-sheet .flexrow {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
-
 .goblin-quest-sheet .flexcol {
     display: flex;
     flex-direction: column;
 }
-
-/* New container for the 2x2 grid section */
 .goblin-quest-sheet .clan-details-grid {
     display: flex;
-    flex-direction: column; /* Stack the rows within this grid */
-    gap: 5px; /* Gap between the rows in the grid */
-    width: 100%; /* Take full width of its parent (clan-info-top) */
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
 }
-
-/* Clan Details Row - Adjusted for overall layout */
 .goblin-quest-sheet .clan-details-row {
-    margin-top: 3px; /* Reduced margin */
-    gap: 5px; /* Adjusted gap between items */
-    /* flex-direction: row; is inherited from .flexrow class in HTML */
-    align-items: center; /* Center items vertically within the row */
-    justify-content: space-around; /* Distribute items with space around them */
-    flex-wrap: nowrap; /* Prevent wrapping unless explicitly needed by media queries */
-    width: 100%; /* Ensure the row takes full width of its parent */
+    margin-top: 3px;
+    gap: 5px;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+    width: 100%;
 }
-
 .goblin-quest-sheet .clan-details-row .form-group {
-    flex: 1; /* Allow form groups to grow and shrink equally */
-    width: auto; /* Let flex handle width */
-    min-width: unset; /* Removed min-width constraint */
-    max-width: unset; /* Removed max-width constraint */
+    flex: 1;
+    width: auto;
+    min-width: unset;
+    max-width: unset;
     display: flex;
     flex-direction: column;
     align-items: center;
     background: rgba(0,0,0,0.1);
-    padding: 4px; /* Reduced padding */
+    padding: 4px;
     border-radius: 6px;
     border: 1px solid rgba(255,255,255,0.1);
 }
-
 .goblin-quest-sheet .clan-details-row label {
-    font-size: 14px; /* Slightly reduced font size */
-    margin-bottom: 1px; /* Reduced margin */
+    font-size: 14px;
+    margin-bottom: 1px;
     color: #FFF;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
 }
-
 .goblin-quest-sheet .checkbox-group {
     display: flex;
-    gap: 2px; /* Reduced gap */
-    margin-top: 1px; /* Reduced margin */
-    padding: 1px 0; /* Reduced padding */
+    gap: 2px;
+    margin-top: 1px;
+    padding: 1px 0;
 }
-
 .goblin-quest-sheet .dice-pool .checkbox-group input[type="checkbox"],
 .goblin-quest-sheet .goblin-health .checkbox-group input[type="checkbox"] {
     appearance: none;
@@ -179,7 +155,6 @@
     background-image: url('../assets/goblin.png');
     padding: 15px;
 }
-
 .goblin-quest-sheet .dice-pool .checkbox-group input[type="checkbox"]:checked,
 .goblin-quest-sheet .goblin-health .checkbox-group input[type="checkbox"]:checked {
     appearance: none;
@@ -196,90 +171,76 @@
     background-image: url('../assets/goblin-negro.png');
     padding: 15px;
 }
-
 .goblin-quest-sheet .dice-pool {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-
 .goblin-quest-sheet .dice-pool .checkbox-group {
     flex-wrap: wrap;
     justify-content: center;
     width: auto;
     flex-direction: row;
-    gap: 3px; /* Reduced gap */
+    gap: 3px;
 }
-
-
-/* Goblin Selection Tabs */
 .goblin-quest-sheet .goblin-tabs {
-    padding: 6px 8px; /* Reduced padding */
+    padding: 6px 8px;
     border-bottom: 2px solid #3AA044;
     background: #286C2D;
 }
-
 .goblin-quest-sheet .goblin-tabs .item {
-    padding: 8px 15px; /* Reduced padding */
+    padding: 8px 15px;
     border-radius: 6px 6px 0 0;
-    margin: 0 2px; /* Reduced margin */
+    margin: 0 2px;
     background: rgba(0,0,0,0.05);
     color: #C8E6C9;
-    font-size: 15px; /* Fixed font size */
+    font-size: 15px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 120px;
 }
-
 .goblin-quest-sheet .goblin-tabs .item.active {
     color: #FFFDE7;
     border-color: #9CCC65;
     background: #4CAF50;
     box-shadow: 0 -2px 6px rgba(0,0,0,0.2);
 }
-
-/* Goblin Details Section */
 .goblin-quest-sheet .goblin-details-section {
-    padding: 10px 15px; /* Reduced padding */
+    padding: 10px 15px;
     background: #4CAF50;
     border-bottom: 2px solid #286C2D;
 }
-
 .goblin-quest-sheet .goblin-card {
     background: #F8FBEF;
-    padding: 15px; /* Reduced padding */
-    border-radius: 8px; /* Reduced border-radius */
+    padding: 15px;
+    border-radius: 8px;
     box-shadow: 0 3px 10px rgba(0,0,0,0.2);
     display: flex;
-    gap: 10px; /* Reduced gap */
+    gap: 10px;
     border: 1px solid #7CB342;
+    align-items: flex-start;
 }
-
 .goblin-quest-sheet .goblin-image-container {
-    flex: 0 0 70px; /* Smaller image size */
-    height: 70px; /* Smaller image size */
+    flex: 0 0 70px;
+    height: 70px;
     border: 2px solid #33691E;
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
     overflow: hidden;
 }
-
 .goblin-quest-sheet .goblin-image-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
 .goblin-quest-sheet .goblin-info {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     flex-grow: 1;
 }
-
-
 .goblin-quest-sheet .goblin-name input {
     font-size: 18px;
     border-bottom: 1px dashed #689F38;
@@ -288,192 +249,162 @@
     width: 100%;
     height: 50px;
 }
-
 .goblin-quest-sheet .goblin-health {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
     gap: 4px;
-    margin-top: 8px; /* Reduced margin */
+    margin-top: 8px;
     flex: 0 0 auto;
 }
-
 .goblin-quest-sheet .goblin-health label {
-    font-size: 16px; /* Fixed font size */
+    font-size: 16px;
     font-weight: bold;
     color: #000000;
     text-shadow: none;
-    margin-right: 0;
+    margin-right: 10px;
 }
-
 .goblin-quest-sheet .health-checkboxes {
     justify-content: flex-start;
     padding: 10px;
 }
-
-
-/* Objective / Mission Section */
 .goblin-quest-sheet .objective-section {
     background: #33691E;
-    padding: 10px 15px; /* Reduced padding */
+    padding: 10px 15px;
     border-top: 2px solid #4CAF50;
     border-bottom: 2px solid #4CAF50;
     color: #E0E0E0;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
 }
-
 .goblin-quest-sheet .objective-title {
     width: 100%;
     display: flex;
 }
-
 .goblin-quest-sheet .objective-title textarea {
-    resize: vertical; /* Allow vertical resizing only */
-    min-height: 60px; /* Minimum height for textarea */
+    resize: vertical;
+    min-height: 60px;
     color: #212121;
     background: #FFFDE7;
     border: 1px solid #689F38;
     border-radius: 4px;
-    padding: 10px; /* Reduced padding */
+    padding: 10px;
     box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
     font-family: 'Chakra Petch', sans-serif;
-    font-size: 14px; /* Fixed font size */
+    font-size: 14px;
     flex-grow: 1;
 }
-
-
-/* Tasks Section - individual task columns */
 .goblin-quest-sheet .task-column {
-    width: 100%; /* Occupy full width of the right panel */
-    max-width: unset; /* Removed max-width constraint */
-    padding: 10px; /* Reduced padding */
+    width: 100%;
+    max-width: unset;
+    padding: 10px;
     border: 1px solid #7CB342;
     border-radius: 8px;
     background: #DCEDC8;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
-
 .goblin-quest-sheet .task-name input {
-    font-size: 14px; /* Fixed font size */
+    font-size: 14px;
     border-bottom: 1px dashed #7CB342;
     color: #212121;
-    margin-bottom: 10px; /* Reduced margin */
+    margin-bottom: 10px;
 }
-
 .goblin-quest-sheet .task-level {
     display: flex;
     align-items: center;
     width: 100%;
     justify-content: space-between;
     gap: 5px;
-    margin-bottom: 6px; /* Reduced margin */
+    margin-bottom: 6px;
     flex-wrap: nowrap;
 }
-
 .goblin-quest-sheet .task-level-label {
-    font-size: 12px; /* Fixed font size */
-    width: 45px; /* Slightly reduced width */
+    font-size: 12px;
+    width: 45px;
     color: #212121;
     flex-shrink: 0;
     text-align: left;
 }
-
 .goblin-quest-sheet .challenge-label {
-    font-size: 12px; /* Fixed font size */
+    font-size: 12px;
     color: #212121;
     flex-shrink: 0;
     text-align: right;
     white-space: nowrap;
     margin-left: auto;
 }
-
 .goblin-quest-sheet .challenge-group {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 3px; /* Reduced gap */
+    gap: 3px;
     flex-shrink: 0;
 }
-
 .goblin-quest-sheet .task-level select {
-    width: 60px; /* Reduced width */
-    height: 25px; /* Reduced height */
+    width: 60px;
+    height: 25px;
     line-height: 25px;
-    padding: 0 5px; /* Reduced padding */
+    padding: 0 5px;
     flex-shrink: 0;
     background-position: right 5px center;
 }
-
 .goblin-quest-sheet .task-level .checkbox-group {
     justify-content: flex-start;
     min-width: unset;
     max-width: unset;
-    gap: 2px; /* Reduced gap */
+    gap: 2px;
     flex-grow: 1;
-    padding-right: 5px; /* Reduced padding */
+    padding-right: 5px;
 }
-
 .goblin-quest-sheet .hidden-checkbox {
     display: none;
 }
-
-
-/* Roll Button */
 .goblin-quest-sheet .dice-pool .roll-button-container {
-    padding-top: 8px; /* Reduced padding */
+    padding-top: 8px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
 .goblin-quest-sheet .roll-button {
     background: linear-gradient(180deg, #9CCC65 0%, #4CAF50 100%);
     color: white;
-    padding: 4px 20px; /* Reduced padding */
-    border-radius: 6px; /* Reduced border-radius */
-    font-size: 15px; /* Fixed font size */
+    padding: 4px 20px;
+    border-radius: 6px;
+    font-size: 15px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.4);
     text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
     width: fit-content;
-    max-width: 180px; /* Reduced max-width */
+    max-width: 180px;
     display: block;
-    margin-bottom: 5px; /* Reduced margin */
+    margin-bottom: 5px;
 }
-
-/* Hover and active states for roll button */
 .goblin-quest-sheet .roll-button:hover {
     background: linear-gradient(180deg, #4CAF50 0%, #9CCC65 100%);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
-
 .goblin-quest-sheet .roll-button:active {
     transform: translateY(0.5px);
     box-shadow: 0 1px 3px rgba(0,0,0,0.3);
 }
-
-/* Dice Roll Results in Chat */
 .dice-result {
     display: inline-block;
-    font-size: 16px; /* Fixed font size */
+    font-size: 1em;
     font-weight: bold;
-    padding: 3px 6px; /* Reduced padding */
-    margin: 2px; /* Reduced margin */
+    padding: 3px 6px;
+    margin: 2px;
     border: 1px solid #7CB342;
     background-color: #C8E6C9;
-    border-radius: 4px; /* Reduced border-radius */
+    border-radius: 4px;
     color: #212121;
     box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
 }
-
 .dice-results-container {
     text-align: center;
-    margin-top: 8px; /* Reduced margin */
+    margin-top: 8px;
     line-height: 1;
 }
-
 .collapse-button {
     background: rgb(143, 64, 0);
     border: black;
@@ -491,7 +422,6 @@
     width: 6%;
     height: 6%;
 }
-
 .objective-section {
     width: 90%;
     display: flex;
@@ -499,3 +429,90 @@
     align-items: center;
     margin-bottom: 5px;
 }
+.goblin-quest-sheet .goblin-info .form-group.goblin-extra-info {
+    width: 100%;
+    margin-top: 5px;
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    align-items: center;
+    gap: 10px;
+}
+.goblin-quest-sheet .goblin-info .form-group.goblin-extra-info label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #000000;
+    text-shadow: none;
+    margin-bottom: 0;
+}
+.goblin-quest-sheet .goblin-info .form-group.goblin-extra-info input[type="text"] {
+    width: 100%;
+    font-size: 14px;
+    color: #212121;
+    background: #FFFDE7;
+    border: 1px solid #689F38;
+    border-radius: 4px;
+    padding: 2px 5px;
+}
+
+/* Estilos para los resultados de dados en el chat */
+.dice-results-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.dice-icon {
+    font-size: 36px;
+    color: #000000;
+}
+
+.roll-summary {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-top: 5px;
+    padding: 3px;
+    border-radius: 3px;
+}
+
+.roll-summary.success {
+    color: #006400; /* Verde oscuro */
+    background-color: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    font-size: 0.8em;
+}
+
+.roll-summary.wound {
+    color: #b71c1c; /* Rojo oscuro */
+    background-color: #ffebee;
+    border: 1px solid #ef9a9a;
+    font-size: 0.8em;
+}
+
+/* Estilos para los mensajes de tirada en el chat */
+.chat-message .message-header .goblin-roll{
+    display: flex;
+    flex-direction: column;
+    font-family: 'Metamorphous', cursive;
+    text-align: center;
+    font-size: 1.5em;
+    padding: 5%;
+    gap: 5%;
+    font-weight: bold;
+}
+
+.chat-message .message-header .goblin-roll h2{
+    display: flex;
+    flex-direction: column;
+    font-family: 'Metamorphous', cursive;
+    text-align: center;
+    font-size: 1.5em;
+    padding: 5%;
+    gap: 5%;
+    font-weight: bold;
+}
+
+

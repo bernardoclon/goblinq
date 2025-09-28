@@ -22,7 +22,9 @@
           "health": {
             "hp1": false,
             "hp2": false
-          }
+          },
+          "feature": "",
+          "causeOfDeath": ""
         },
         "goblin2": {
           "name": "",
@@ -30,7 +32,9 @@
           "health": {
             "hp1": false,
             "hp2": false
-          }
+          },
+          "feature": "",
+          "causeOfDeath": ""
         },
         "goblin3": {
           "name": "",
@@ -38,7 +42,9 @@
           "health": {
             "hp1": false,
             "hp2": false
-          }
+          },
+          "feature": "",
+          "causeOfDeath": ""
         },
         "goblin4": {
           "name": "",
@@ -46,7 +52,9 @@
           "health": {
             "hp1": false,
             "hp2": false
-          }
+          },
+          "feature": "",
+          "causeOfDeath": ""
         },
         "goblin5": {
           "name": "",
@@ -54,7 +62,9 @@
           "health": {
             "hp1": false,
             "hp2": false
-          }
+          },
+          "feature": "",
+          "causeOfDeath": ""
         }
       },
       "dicePool": {
