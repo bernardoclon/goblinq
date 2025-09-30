@@ -340,7 +340,7 @@ Hooks.on('renderActorDirectory', (app, html, data) => {
 
     const button = $(`<button class="gm-task-panel-btn"><i class="fas fa-tasks"></i> GM Task Panel</button>`);
     button.on('click', () => {
-        new GMPanel().render(true);
+        GMPanel.createOrShow();
     });
 
     $(html).find('.directory-header').append(button);

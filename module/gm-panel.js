@@ -12,6 +12,27 @@ export class GMPanel extends Application {
         return this.#instance;
     }
 
+    /**
+     * Create or show the GM Panel instance - prevents multiple instances
+     * @returns {GMPanel} The singleton instance
+     */
+    static createOrShow() {
+        if (this.#instance && this.#instance.rendered) {
+            // Si ya existe y está renderizada, solo la traemos al frente
+            this.#instance.bringToTop();
+            return this.#instance;
+        } else if (this.#instance) {
+            // Si existe pero no está renderizada, la renderizamos
+            this.#instance.render(true);
+            return this.#instance;
+        } else {
+            // Si no existe, creamos una nueva instancia
+            const panel = new GMPanel();
+            panel.render(true);
+            return panel;
+        }
+    }
+
     #subscribeToSettings() {
         // Hook para cambios en configuraciones globales
         Hooks.on("updateSetting", (setting) => {
@@ -146,5 +167,20 @@ export class GMPanel extends Application {
         } catch (error) {
             console.error("Error updating difficulty:", error);
         }
+    }
+
+    /**
+     * Override close method to clean up singleton instance
+     * @param {object} options - Close options
+     * @returns {Promise<void>}
+     */
+    async close(options = {}) {
+        const result = await super.close(options);
+        // Limpiar la instancia singleton cuando se cierra
+        if (GMPanel.#instance === this) {
+            GMPanel.#instance = null;
+            console.log("GM Panel | Instance cleared");
+        }
+        return result;
     }
 }
