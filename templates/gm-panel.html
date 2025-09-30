@@ -1,0 +1,163 @@
+<form class="goblin-quest-gm-panel tasks-section">
+    <div class="right-panel">
+    <div class="objective-section">
+        <h2 class="objective-title"><textarea name="objective" style="resize: none;" placeholder="Objetivo o Misión">{{data.objective}}</textarea></h2>
+    </div>
+    <div class="task-column flexcol">
+        <h3 class="task-name"><input type="text" name="tasks.task1.name" value="{{data.tasks.task1.name}}" placeholder="tarea 1"/></h3>
+        {{#with data.tasks.task1.levels.level1 as |level|}}
+        <div class="task-level flexrow">
+            <input type="text" class="task-level-label" name="tasks.task1.levels.level1.name" value="{{level.name}}">
+            <div class="checkbox-group task-checkboxes">
+                {{#each (range 0 level.numCheckboxes) as |i|}}
+                <input type="checkbox" name="tasks.task1.levels.level1.checkboxStates.{{i}}" data-idx="{{i}}" {{#if (lookup level.checkboxStates i)}}checked{{/if}}>
+                {{/each}}
+            </div>
+            <div class="challenge-group flexcol">
+                <label class="challenge-label">Complicacion</label>
+                <input type="checkbox" name="tasks.task1.levels.level1.complication" {{#if level.complication}}checked{{/if}}>
+            </div>
+        </div>
+        {{/with}}
+        {{#with data.tasks.task1.levels.level2 as |level|}}
+        <div class="task-level flexrow">
+            <input type="text" class="task-level-label" name="tasks.task1.levels.level2.name" value="{{level.name}}">
+            <div class="checkbox-group task-checkboxes">
+                {{#each (range 0 level.numCheckboxes) as |i|}}
+                <input type="checkbox" name="tasks.task1.levels.level2.checkboxStates.{{i}}" data-idx="{{i}}" {{#if (lookup level.checkboxStates i)}}checked{{/if}}>
+                {{/each}}
+            </div>
+            <div class="challenge-group flexcol">
+                <label class="challenge-label">Complicacion</label>
+                <input type="checkbox" name="tasks.task1.levels.level2.complication" {{#if level.complication}}checked{{/if}}>
+            </div>
+        </div>
+        {{/with}}
+        {{#with data.tasks.task1.levels.level3 as |level|}}
+        <div class="task-level flexrow">
+            <input type="text" class="task-level-label" name="tasks.task1.levels.level3.name" value="{{level.name}}">
+            <div class="checkbox-group task-checkboxes">
+                {{#each (range 0 level.numCheckboxes) as |i|}}
+                <input type="checkbox" name="tasks.task1.levels.level3.checkboxStates.{{i}}" data-idx="{{i}}" {{#if (lookup level.checkboxStates i)}}checked{{/if}}>
+                {{/each}}
+            </div>
+            <div class="challenge-group flexcol">
+                <label class="challenge-label">Complicacion</label>
+                <input type="checkbox" name="tasks.task1.levels.level3.complication" {{#if level.complication}}checked{{/if}}>
+            </div>
+        </div>
+        {{/with}}
+    </div>
+
+    <!-- Task 2 -->
+    <div class="task-column flexcol">
+        <h3 class="task-name"><input type="text" name="tasks.task2.name" value="{{data.tasks.task2.name}}" placeholder="tarea 2"/></h3>
+        {{#with data.tasks.task2.levels.level1 as |level|}}
+        <div class="task-level flexrow">
+            <input type="text" class="task-level-label" name="tasks.task2.levels.level1.name" value="{{level.name}}">
+            <div class="checkbox-group task-checkboxes">
+                {{#each (range 0 level.numCheckboxes) as |i|}}
+                <input type="checkbox" name="tasks.task2.levels.level1.checkboxStates.{{i}}" data-idx="{{i}}" {{#if (lookup level.checkboxStates i)}}checked{{/if}}>
+                {{/each}}
+            </div>
+            <div class="challenge-group flexcol">
+                <label class="challenge-label">Complicacion</label>
+                <input type="checkbox" name="tasks.task2.levels.level1.complication" {{#if level.complication}}checked{{/if}}>
+            </div>
+        </div>
+        {{/with}}
+        {{#with data.tasks.task2.levels.level2 as |level|}}
+        <div class="task-level flexrow">
+            <input type="text" class="task-level-label" name="tasks.task2.levels.level2.name" value="{{level.name}}">
+            <div class="checkbox-group task-checkboxes">
+                {{#each (range 0 level.numCheckboxes) as |i|}}
+                <input type="checkbox" name="tasks.task2.levels.level2.checkboxStates.{{i}}" data-idx="{{i}}" {{#if (lookup level.checkboxStates i)}}checked{{/if}}>
+                {{/each}}
+            </div>
+            <div class="challenge-group flexcol">
+                <label class="challenge-label">Complicacion</label>
+                <input type="checkbox" name="tasks.task2.levels.level2.complication" {{#if level.complication}}checked{{/if}}>
+            </div>
+        </div>
+        {{/with}}
+        {{#with data.tasks.task2.levels.level3 as |level|}}
+        <div class="task-level flexrow">
+            <input type="text" class="task-level-label" name="tasks.task2.levels.level3.name" value="{{level.name}}">
+            <div class="checkbox-group task-checkboxes">
+                {{#each (range 0 level.numCheckboxes) as |i|}}
+                <input type="checkbox" name="tasks.task2.levels.level3.checkboxStates.{{i}}" data-idx="{{i}}" {{#if (lookup level.checkboxStates i)}}checked{{/if}}>
+                {{/each}}
+            </div>
+            <div class="challenge-group flexcol">
+                <label class="challenge-label">Complicacion</label>
+                <input type="checkbox" name="tasks.task2.levels.level3.complication" {{#if level.complication}}checked{{/if}}>
+            </div>
+        </div>
+        {{/with}}
+    </div>
+
+    <!-- Task 3 -->
+    <div class="task-column flexcol">
+        <h3 class="task-name"><input type="text" name="tasks.task3.name" value="{{data.tasks.task3.name}}" placeholder="tarea 3"/></h3>
+        {{#with data.tasks.task3.levels.level1 as |level|}}
+        <div class="task-level flexrow">
+            <input type="text" class="task-level-label" name="tasks.task3.levels.level1.name" value="{{level.name}}">
+            <div class="checkbox-group task-checkboxes">
+                {{#each (range 0 level.numCheckboxes) as |i|}}
+                <input type="checkbox" name="tasks.task3.levels.level1.checkboxStates.{{i}}" data-idx="{{i}}" {{#if (lookup level.checkboxStates i)}}checked{{/if}}>
+                {{/each}}
+            </div>
+            <div class="challenge-group flexcol">
+                <label class="challenge-label">Complicacion</label>
+                <input type="checkbox" name="tasks.task3.levels.level1.complication" {{#if level.complication}}checked{{/if}}>
+            </div>
+        </div>
+        {{/with}}
+        {{#with data.tasks.task3.levels.level2 as |level|}}
+        <div class="task-level flexrow">
+            <input type="text" class="task-level-label" name="tasks.task3.levels.level2.name" value="{{level.name}}">
+            <div class="checkbox-group task-checkboxes">
+                {{#each (range 0 level.numCheckboxes) as |i|}}
+                <input type="checkbox" name="tasks.task3.levels.level2.checkboxStates.{{i}}" data-idx="{{i}}" {{#if (lookup level.checkboxStates i)}}checked{{/if}}>
+                {{/each}}
+            </div>
+            <div class="challenge-group flexcol">
+                <label class="challenge-label">Complicacion</label>
+                <input type="checkbox" name="tasks.task3.levels.level2.complication" {{#if level.complication}}checked{{/if}}>
+            </div>
+        </div>
+        {{/with}}
+        {{#with data.tasks.task3.levels.level3 as |level|}}
+        <div class="task-level flexrow">
+            <input type="text" class="task-level-label" name="tasks.task3.levels.level3.name" value="{{level.name}}">
+            <div class="checkbox-group task-checkboxes">
+                {{#each (range 0 level.numCheckboxes) as |i|}}
+                <input type="checkbox" name="tasks.task3.levels.level3.checkboxStates.{{i}}" data-idx="{{i}}" {{#if (lookup level.checkboxStates i)}}checked{{/if}}>
+                {{/each}}
+            </div>
+            <div class="challenge-group flexcol">
+                <label class="challenge-label">Complicacion</label>
+                <input type="checkbox" name="tasks.task3.levels.level3.complication" {{#if level.complication}}checked{{/if}}>
+            </div>
+        </div>
+        {{/with}}
+    </div>
+        <div class="difficulty-section">
+            <h3 class="section-title">Dificultad de la Próxima Tirada</h3>
+            <div class="difficulty-options">
+                <div class="difficulty-option" data-difficulty="easy">
+                    <input type="radio" id="difficulty-easy" name="difficulty" value="easy" {{#if (eq data.difficulty "easy")}}checked{{/if}}>
+                    <label for="difficulty-easy">Fácil (+1)</label>
+                </div>
+                <div class="difficulty-option" data-difficulty="normal">
+                    <input type="radio" id="difficulty-normal" name="difficulty" value="normal" {{#if (eq data.difficulty "normal")}}checked{{/if}}>
+                    <label for="difficulty-normal">Normal (0)</label>
+                </div>
+                <div class="difficulty-option" data-difficulty="hard">
+                    <input type="radio" id="difficulty-hard" name="difficulty" value="hard" {{#if (eq data.difficulty "hard")}}checked{{/if}}>
+                    <label for="difficulty-hard">Difícil (-1)</label>
+                </div>
+            </div>
+        </div>
+    </div>  
+</form>

@@ -3,6 +3,7 @@
 // Las clases de Foundry VTT como ActorSheet, loadTemplates, y Actors son globales o se acceden vía 'foundry.'
 // No requieren una declaración de importación con rutas de módulo como "foundry.appv1.sheets.ActorSheet".
 import { GoblinQuestActorSheet } from "./sheets/goblin-quest-actor-sheet.js";
+import { GMPanel } from "./gm-panel.js";
 
 // Define un ID para el sistema, utilizado para configuraciones.
 const SYSTEM_ID = "goblin-quest-system";
@@ -18,7 +19,8 @@ Hooks.once("init", async function() {
     // Cargar las plantillas HTML del sistema.
     // Acceder a 'loadTemplates' directamente desde el namespace 'foundry.applications.handlebars'
     await foundry.applications.handlebars.loadTemplates([
-        "systems/goblin-quest-system/templates/actor-sheet.html"
+        "systems/goblin-quest-system/templates/actor-sheet.html",
+        "systems/goblin-quest-system/templates/gm-panel.html"
         // Si tuvieras hojas de items o de otro tipo, las agregarías aquí.
         // Ejemplo: "systems/goblin-quest-system/templates/item-sheet.html"
     ]);
@@ -32,6 +34,43 @@ Hooks.once("init", async function() {
         types: ["clan"], // Especifica qué tipos de actores usarán esta hoja (definido en template.json).
         makeDefault: true, // Establece esta hoja como la predeterminada para el tipo 'clan'.
         label: "Hoja de Clan Goblin" // Etiqueta que aparecerá en el selector de hojas.
+    });
+
+    game.settings.register("goblin-quest-system", "globalTasks", {
+        name: "Global Tasks",
+        scope: "world",
+        config: false,
+        type: Object,
+        default: {
+            objective: "",
+            difficulty: "normal",
+            tasks: {
+                task1: {
+                    name: "",
+                    levels: {
+                        level1: { name: "Nivel 1", complication: false },
+                        level2: { name: "Nivel 2", complication: false },
+                        level3: { name: "Nivel 3", complication: false }
+                    }
+                },
+                task2: {
+                    name: "",
+                    levels: {
+                        level1: { name: "Nivel 1", complication: false },
+                        level2: { name: "Nivel 2", complication: false },
+                        level3: { name: "Nivel 3", complication: false }
+                    }
+                },
+                task3: {
+                    name: "",
+                    levels: {
+                        level1: { name: "Nivel 1", complication: false },
+                        level2: { name: "Nivel 2", complication: false },
+                        level3: { name: "Nivel 3", complication: false }
+                    }
+                }
+            }
+        }
     });
 
     // Registra el helper 'range' para Handlebars.
@@ -69,6 +108,33 @@ Hooks.once("init", async function() {
         return a > b;
     });
 
+});
+
+// Hook 'ready' para configurar sockets después de que el juego esté listo
+Hooks.once("ready", function() {
+    // Configurar socket para comunicación entre jugadores y GM
+    game.socket.on("system.goblin-quest-system", async (data) => {
+        // Solo el GM puede actualizar settings globales
+        if (!game.user.isGM) return;
+        
+        console.log("Goblin Quest System | Socket recibido:", data);
+        
+        if (data.type === "updateDifficulty") {
+            try {
+                const settings = game.settings.get("goblin-quest-system", "globalTasks");
+                const newSettings = foundry.utils.deepClone(settings);
+                newSettings.difficulty = data.difficulty;
+                await game.settings.set("goblin-quest-system", "globalTasks", newSettings);
+                
+                // Notificar que la dificultad fue actualizada
+                ui.notifications.info(`Dificultad actualizada a "${data.difficulty}" por ${data.user}`);
+                console.log(`Goblin Quest System | Dificultad actualizada a "${data.difficulty}" por ${data.user}`);
+            } catch (error) {
+                console.error("Goblin Quest System | Error actualizando dificultad:", error);
+                ui.notifications.error("Error al actualizar la dificultad");
+            }
+        }
+    });
 });
 
 // Hook 'setup' se ejecuta después de 'init' y antes de que se carguen los datos del juego.
@@ -150,62 +216,7 @@ Hooks.once("setup", function() {
                     value: new fields.NumberField({ required: true, integer: true, initial: 0, min: 0 }),
                     max: new fields.NumberField({ required: true, integer: true, initial: 10, min: 0 })
                 }),
-                diceModifier: new fields.NumberField({ required: true, integer: true, initial: 0 }),
-                objective: new fields.StringField({ required: true, initial: "" }),
-                tasks: new fields.SchemaField({
-                    task1: new fields.SchemaField({
-                        name: new fields.StringField({ required: true, initial: "" }),
-                        levels: new fields.SchemaField({
-                            // CORRECCIÓN APLICADA AQUÍ: level1 ahora es un SchemaField
-                            level1: new fields.SchemaField({
-                                challenge: new fields.NumberField({ required: true, integer: true, initial: 3, min: 3, max: 4 }),
-                                checkboxStates: new fields.ArrayField(new fields.BooleanField({ initial: false }), { required: true, initial: [false, false, false, false] })
-                            }),
-                            level2: new fields.SchemaField({ 
-                                challenge: new fields.NumberField({ required: true, integer: true, initial: 3, min: 3, max: 4 }),
-                                checkboxStates: new fields.ArrayField(new fields.BooleanField({ initial: false }), { required: true, initial: [false, false, false, false] })
-                            }),
-                            level3: new fields.SchemaField({
-                                challenge: new fields.NumberField({ required: true, integer: true, initial: 3, min: 3, max: 4 }),
-                                checkboxStates: new fields.ArrayField(new fields.BooleanField({ initial: false }), { required: true, initial: [false, false, false, false] })
-                            })
-                        })
-                    }),
-                    task2: new fields.SchemaField({
-                        name: new fields.StringField({ required: true, initial: "" }),
-                        levels: new fields.SchemaField({
-                            level1: new fields.SchemaField({
-                                challenge: new fields.NumberField({ required: true, integer: true, initial: 3, min: 3, max: 4 }),
-                                checkboxStates: new fields.ArrayField(new fields.BooleanField({ initial: false }), { required: true, initial: [false, false, false, false] })
-                            }),
-                            level2: new fields.SchemaField({
-                                challenge: new fields.NumberField({ required: true, integer: true, initial: 3, min: 3, max: 4 }),
-                                checkboxStates: new fields.ArrayField(new fields.BooleanField({ initial: false }), { required: true, initial: [false, false, false, false] })
-                            }),
-                            level3: new fields.SchemaField({
-                                challenge: new fields.NumberField({ required: true, integer: true, initial: 3, min: 3, max: 4 }),
-                                checkboxStates: new fields.ArrayField(new fields.BooleanField({ initial: false }), { required: true, initial: [false, false, false, false] })
-                            })
-                        })
-                    }),
-                    task3: new fields.SchemaField({
-                        name: new fields.StringField({ required: true, initial: "" }),
-                        levels: new fields.SchemaField({
-                            level1: new fields.SchemaField({ // Corregido: Ahora es un SchemaField
-                                challenge: new fields.NumberField({ required: true, integer: true, initial: 3, min: 3, max: 4 }),
-                                checkboxStates: new fields.ArrayField(new fields.BooleanField({ initial: false }), { required: true, initial: [false, false, false, false] })
-                            }),
-                            level2: new fields.SchemaField({
-                                challenge: new fields.NumberField({ required: true, integer: true, initial: 3, min: 3, max: 4 }),
-                                checkboxStates: new fields.ArrayField(new fields.BooleanField({ initial: false }), { required: true, initial: [false, false, false, false] })
-                            }),
-                            level3: new fields.SchemaField({
-                                challenge: new fields.NumberField({ required: true, integer: true, initial: 3, min: 3, max: 4 }),
-                                checkboxStates: new fields.ArrayField(new fields.BooleanField({ initial: false }), { required: true, initial: [false, false, false, false] })
-                            })
-                        })
-                    })
-                })
+                diceModifier: new fields.NumberField({ required: true, integer: true, initial: 0 })
             };
         }
     }
@@ -325,3 +336,14 @@ function applyCompendiumBanner(popoutSection) {
       bannersBeingApplied.delete(popoutId);
     }
 }
+
+Hooks.on('renderActorDirectory', (app, html, data) => {
+    if (!game.user.isGM) return;
+
+    const button = $(`<button class="gm-task-panel-btn"><i class="fas fa-tasks"></i> GM Task Panel</button>`);
+    button.on('click', () => {
+        new GMPanel().render(true);
+    });
+
+    $(html).find('.directory-header').append(button);
+});

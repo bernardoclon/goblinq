@@ -71,34 +71,7 @@
         "value": 0,
         "max": 10
       },
-      "diceModifier": 0,
-      "objective": "",
-      "tasks": {
-        "task1": {
-          "name": "",
-          "levels": {
-            "level1": {"challenge": 3, "checkboxStates": [false, false, false, false]},
-            "level2": {"challenge": 3, "checkboxStates": [false, false, false, false]},
-            "level3": {"challenge": 3, "checkboxStates": [false, false, false, false]}
-          }
-        },
-        "task2": {
-          "name": "",
-          "levels": {
-            "level1": {"challenge": 3, "checkboxStates": [false, false, false, false]},
-            "level2": {"challenge": 3, "checkboxStates": [false, false, false, false]},
-            "level3": {"challenge": 3, "checkboxStates": [false, false, false, false]}
-          }
-        },
-        "task3": {
-          "name": "",
-          "levels": {
-            "level1": {"challenge": 3, "checkboxStates": [false, false, false, false]},
-            "level2": {"challenge": 3, "checkboxStates": [false, false, false, false]},
-            "level3": {"challenge": 3, "checkboxStates": [false, false, false, false]}
-          }
-        }
-      }
+      "diceModifier": 0
     }
   },
   "Item": {
