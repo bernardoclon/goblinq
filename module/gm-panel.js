@@ -137,7 +137,31 @@ export class GMPanel extends Application {
         const value = input.type === 'checkbox' ? input.checked : input.value;
         const settings = game.settings.get("goblin-quest-system", "globalTasks");
         const newSettings = foundry.utils.deepClone(settings);
-        foundry.utils.setProperty(newSettings, input.name, value);
+        
+        // Manejar checkboxes de estados de tareas con índices específicos
+        if (input.name.includes("checkboxStates.")) {
+            const pathParts = input.name.split(".");
+            const checkboxIndex = parseInt(pathParts[pathParts.length - 1]);
+            const basePath = pathParts.slice(0, -1).join(".");
+            
+            // Obtener o crear el array de checkboxStates
+            let checkboxStates = foundry.utils.getProperty(newSettings, basePath);
+            if (!Array.isArray(checkboxStates)) {
+                checkboxStates = [];
+            }
+            
+            // Actualizar el estado específico del checkbox
+            checkboxStates[checkboxIndex] = value;
+            
+            // Establecer el array actualizado de vuelta
+            foundry.utils.setProperty(newSettings, basePath, checkboxStates);
+            
+            console.log(`Updated ${input.name} to ${value}`);
+        } else {
+            // Manejar otros inputs normalmente
+            foundry.utils.setProperty(newSettings, input.name, value);
+        }
+        
         await game.settings.set("goblin-quest-system", "globalTasks", newSettings);
     }
 
