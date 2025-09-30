@@ -77,9 +77,19 @@ export class GMPanel extends Application {
         super.activateListeners(html);
         if (!game.user.isGM) return;
 
+        // Text inputs and textareas
         html.find('input[type="text"], textarea').change(this._onSettingChange.bind(this));
-        html.find('input[type="checkbox"]').change(this._onCheckboxChange.bind(this));
+        
+        // Task checkboxes (exclude difficulty radio buttons)
+        html.find('input[type="checkbox"]:not([name="difficulty"])').change(this._onCheckboxChange.bind(this));
+        
+        // Difficulty radio buttons with more specific handling
         html.find('input[type="radio"][name="difficulty"]').change(this._onDifficultyChange.bind(this));
+        
+        // Also listen for click events on difficulty radio buttons as backup
+        html.find('input[type="radio"][name="difficulty"]').click(this._onDifficultyChange.bind(this));
+        
+        console.log("GM Panel listeners activated");
     }
 
     async _onSettingChange(event) {
@@ -99,10 +109,23 @@ export class GMPanel extends Application {
     }
 
     async _onDifficultyChange(event) {
+        event.preventDefault();
         const input = event.currentTarget;
-        const settings = game.settings.get("goblin-quest-system", "globalTasks");
-        const newSettings = foundry.utils.deepClone(settings);
-        newSettings.difficulty = input.value;
-        await game.settings.set("goblin-quest-system", "globalTasks", newSettings);
+        
+        // Only process if the radio button is actually checked
+        if (!input.checked) return;
+        
+        try {
+            const settings = game.settings.get("goblin-quest-system", "globalTasks");
+            const newSettings = foundry.utils.deepClone(settings);
+            newSettings.difficulty = input.value;
+            
+            await game.settings.set("goblin-quest-system", "globalTasks", newSettings);
+            
+            console.log("Difficulty updated to:", input.value);
+            
+        } catch (error) {
+            console.error("Error updating difficulty:", error);
+        }
     }
 }

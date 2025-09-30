@@ -423,8 +423,26 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         // Usar la cuenta de checkboxes marcados del DOM para la tirada actual
         let dicePoolValue = checkedDiceCount; 
 
-        // Obtener el modificador de dados actual desde el actor, asegurando un valor por defecto de 0
-        let diceModifier = this.actor.system.diceModifier || 0;
+        // Obtener el modificador de la dificultad global desde las configuraciones
+        const globalSettings = game.settings.get("goblin-quest-system", "globalTasks");
+        let diceModifier = 0;
+        
+        // Convertir dificultad a modificador
+        switch (globalSettings.difficulty) {
+            case "easy":
+                diceModifier = 1;
+                break;
+            case "normal":
+                diceModifier = 0;
+                break;
+            case "hard":
+                diceModifier = -1;
+                break;
+            default:
+                diceModifier = 0;
+        }
+        
+        console.log(`Dificultad global: ${globalSettings.difficulty}, Modificador aplicado: ${diceModifier}`);
 
         // Calcular la cantidad de dados a tirar: checkboxes marcados + 1
         const actualDiceToRoll = dicePoolValue + 1; // Se añade +1 como solicitado por el usuario
@@ -442,36 +460,54 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         const rawIndividualResults = roll.dice[0].results.map(r => r.result);
         console.log("Resultados de dados individuales (sin modificar):", rawIndividualResults);
 
-        // Aplicar el modificador a cada resultado y asegurar que el resultado final de cada dado esté entre 1 y 6.
+        // Aplicar el modificador a cada resultado sin restricciones (permite -1 y 7)
         const displayedResults = rawIndividualResults.map(result => {
             const modifiedResult = result + diceModifier;
-            // Asegurar que el resultado final esté dentro del rango de 1 a 6
-            return Math.min(6, Math.max(1, modifiedResult));
+            // No restringir el resultado - permite -1, 0, 7, etc.
+            return modifiedResult;
         });
         console.log("Resultados de dados individuales (con modificador aplicado y ajustado):", displayedResults);
 
         // --- NUEVA LÓGICA PARA EL MENSAJE DE CHAT ---
 
-        // 1. Contar éxitos y heridas
-        const successes = displayedResults.filter(r => r >= 5).length;
-        const wounds = displayedResults.filter(r => r <= 2).length;
+        // 1. Contar éxitos y heridas con reglas especiales
+        let successes = 0;
+        let wounds = 0;
+        
+        displayedResults.forEach(r => {
+            if (r === 7) {
+                successes += 2; // 7 cuenta como 2 éxitos
+            } else if (r >= 5) {
+                successes += 1; // 5-6 normal success
+            }
+            
+            if (r === 0) {
+                wounds += 2; // 0 cuenta como 2 heridas
+            } else if (r <= 2 && r >= 1) {
+                wounds += 1; // 1, 2 normal wounds
+            }
+        });
 
-        // 2. Reemplazar números con iconos de Font Awesome
-        const diceIconMap = {
-            1: 'one',
-            2: 'two',
-            3: 'three',
-            4: 'four',
-            5: 'five',
-            6: 'six'
-        };
-
-        const diceIconsHtml = displayedResults.map(result => {
-            const icon = diceIconMap[result] || 'question';
-            return `<i class="fas fa-dice-${icon} dice-icon"></i>`;
+        // 2. Crear números en cajitas que simulan dados
+        const diceBoxesHtml = displayedResults.map(result => {
+            let displayValue = result;
+            let cssClass = 'dice-box';
+            
+            // Colores especiales para resultados extraordinarios
+            if (result === 7) {
+                cssClass += ' dice-seven'; // Dorado para éxito doble
+            } else if (result === 0) {
+                cssClass += ' dice-zero'; // Rojo para herida doble
+            } else if (result >= 5) {
+                cssClass += ' dice-success'; // Verde para éxitos
+            } else if (result <= 2 && result >= 1) {
+                cssClass += ' dice-wound'; // Rojo para heridas
+            }
+            
+            return `<div class="${cssClass}">${displayValue}</div>`;
         }).join(' ');
 
-        const resultsHtml = `<div class="dice-results-container">${diceIconsHtml}</div>`;
+        const resultsHtml = `<div class="dice-results-container">${diceBoxesHtml}</div>`;
 
         // 3. Construir los mensajes de éxito y heridas
         const successesMessage = `<div class="roll-summary success">Éxitos: ${successes}</div>`;
@@ -521,9 +557,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             nextDifficulty = 'normal';
         }
 
-        // Actualizar el modificador de dados en el actor para la siguiente tirada
-        await this.actor.update({ "system.diceModifier": nextModifier });
-        console.log(`Modificador para la siguiente tirada: ${nextModifier}`);
+        console.log(`Dificultad para la siguiente tirada: ${nextDifficulty} (${nextModifier})`);
 
         // Actualizar la dificultad en las configuraciones globales via socket
         if (game.user.isGM) {

@@ -126,8 +126,6 @@ Hooks.once("ready", function() {
                 newSettings.difficulty = data.difficulty;
                 await game.settings.set("goblin-quest-system", "globalTasks", newSettings);
                 
-                // Notificar que la dificultad fue actualizada
-                ui.notifications.info(`Dificultad actualizada a "${data.difficulty}" por ${data.user}`);
                 console.log(`Goblin Quest System | Dificultad actualizada a "${data.difficulty}" por ${data.user}`);
             } catch (error) {
                 console.error("Goblin Quest System | Error actualizando dificultad:", error);
