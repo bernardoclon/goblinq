@@ -13,11 +13,30 @@ export class GMPanel extends Application {
     }
 
     #subscribeToSettings() {
+        // Hook para cambios en configuraciones globales
         Hooks.on("updateSetting", (setting) => {
             if (setting.key === "goblin-quest-system.globalTasks" && game.user.isGM) {
                 this.render(true);
             }
         });
+
+        // Hook para cuando se crea un nuevo actor
+        Hooks.on("createActor", (actor) => {
+            if (actor.type === "clan" && game.user.isGM) {
+                console.log("GM Panel | New clan actor created:", actor.name);
+                this.render(true);
+            }
+        });
+
+        // Hook para cuando se elimina un actor
+        Hooks.on("deleteActor", (actor) => {
+            if (actor.type === "clan" && game.user.isGM) {
+                console.log("GM Panel | Clan actor deleted:", actor.name);
+                this.render(true);
+            }
+        });
+
+        console.log("GM Panel | Event listeners registered for actor changes");
     }
 
     static get defaultOptions() {
