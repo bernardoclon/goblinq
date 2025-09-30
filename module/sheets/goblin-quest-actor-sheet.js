@@ -37,7 +37,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
      * @private
      */
     _smoothUpdateTasks() {
-        const tasksSection = document.getElementById('tasks-section');
+        const tasksSection = this.element.find('.tasks-section')[0];
         const tasksPanel = this.element.find('.readonly-tasks-panel');
         
         // Si no estamos en vista de tareas, usar re-render normal
@@ -146,8 +146,8 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
     _restoreViewState() {
         if (this._currentView === 'tasks-view') {
             const button = this.element.find('.single-view-toggle');
-            const characterSection = document.getElementById('character-section');
-            const tasksSection = document.getElementById('tasks-section');
+            const characterSection = this.element.find('.character-section')[0];
+            const tasksSection = this.element.find('.tasks-section')[0];
             
             if (characterSection && tasksSection) {
                 // Switch to tasks view
@@ -564,12 +564,12 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         event.preventDefault();
         const button = event.currentTarget;
         
-        // Get the sections directly by ID
-        const characterSection = document.getElementById('character-section');
-        const tasksSection = document.getElementById('tasks-section');
+        // Get the sections within this specific sheet
+        const characterSection = this.element.find('.character-section')[0];
+        const tasksSection = this.element.find('.tasks-section')[0];
         
         if (!characterSection || !tasksSection) {
-            console.warn('Could not find character or tasks sections');
+            console.warn('Could not find character or tasks sections in this sheet');
             return;
         }
         

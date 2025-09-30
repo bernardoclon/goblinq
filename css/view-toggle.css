@@ -10,7 +10,7 @@
     right: 8px;
     width: 30px;
     height: 30px;
-    background: linear-gradient(135deg, #3AA044 0%, #2A7A34 100%);
+    background: linear-gradient(135deg, #a08d3a 0%, #7a792a 100%);
     color: #E0E0E0;
     border: 1px solid #4CAF50;
     border-radius: 6px;
@@ -25,7 +25,7 @@
 }
 
 .single-view-toggle:hover {
-    background: linear-gradient(135deg, #4CAF50 0%, #3AA044 100%);
+    background: linear-gradient(135deg, #af4c4c 0%, #a03a3a 100%);
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
     transform: scale(1.05);
 }
@@ -145,19 +145,25 @@
    Prevent textarea from overlapping with toggle button
    ================================================================= */
 
-/* Target the main container that holds everything */
-.tasks-view .readonly-tasks-panel .right-panel {
-    margin-right: 50px !important; /* Space for toggle button */
-    padding-right: 10px !important;
+/* More specific and aggressive approach for textarea width control */
+.goblin-quest-sheet .tasks-view .readonly-tasks-panel {
+    margin-right: 55px !important; /* Space for toggle button */
+    padding-right: 5px !important;
 }
 
-/* Additional targeting for the objective section specifically */
-.tasks-view .readonly-tasks-panel .objective-section .objective-title textarea[readonly] {
+.goblin-quest-sheet .tasks-view .readonly-tasks-panel .right-panel {
+    width: calc(100% - 10px) !important;
+    max-width: calc(100% - 10px) !important;
+    box-sizing: border-box !important;
+}
+
+/* Target all textareas and inputs in the tasks view */
+.goblin-quest-sheet .tasks-view .readonly-tasks-panel textarea,
+.goblin-quest-sheet .tasks-view .readonly-tasks-panel .objective-title textarea {
     width: calc(100% - 20px) !important;
     max-width: calc(100% - 20px) !important;
     box-sizing: border-box !important;
-    margin-right: 0 !important;
-    padding-right: 8px !important;
+    margin-right: 10px !important;
 }
 
 /* Tasks View Container Styles */
@@ -225,7 +231,7 @@
 }
 
 .readonly-tasks-panel .objective-title {
-    width: 100%;
+    width: 50% !important;
     display: flex;
 }
 
@@ -509,4 +515,8 @@
     .single-view-toggle i {
         font-size: 12px;
     }
+}
+
+.objective-sectionp {
+    width: 95% !important;
 }
