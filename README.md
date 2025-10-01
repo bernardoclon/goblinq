@@ -36,4 +36,3 @@ Los chequeos de habilidad son tan impredecibles como la digestión de un ogro de
 ## Derechos de Autor y Licencia (Spanish/Español)
 
 El sistema no oficial de *Goblin Quest* para Foundry VTT es una producción independiente de **Bernardoclon** y no está afiliado con **Rowan, Rook and Decard**. Se publica bajo la **Licencia Comunitaria de RR&D**, y algunas partes de este trabajo se publican con permiso de Rowan, Rook and Decard. *Goblin Quest* es propiedad intelectual (copyright) de Rowan, Rook and Decard. Puedes obtener más información y apoyar estos juegos en [https://rowanrookanddecard.com](https://rowanrookanddecard.com).
-```
