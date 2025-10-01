@@ -23,8 +23,7 @@ It is published under the **RR&D Community License**, and some parts of this wor
 
 ---
 
-## ¡Prepárate para la Locura! (Spanish/Español)
-
+## ¡Prepárate para la Locura!
 **Goblin Quest: Unofficial** es un sistema para **Foundry VTT** que captura la esencia caótica, estúpida y brutalmente corta de la vida de un goblin. Aquí no hay héroes épicos, ni misiones grandiosas. Solo hay goblins, explosiones, planes terribles y la inevitable, vergonzosa y posiblemente hilarante muerte.
 
 Este sistema, hecho por y para goblins (o al menos aquellos lo suficientemente tontos para jugarlos), te permitirá sumergirte en un mundo donde el "éxito" se mide en si lograste prenderle fuego a algo antes de que se te prendiera fuego a ti.
@@ -33,6 +32,6 @@ Los chequeos de habilidad son tan impredecibles como la digestión de un ogro de
 
 ---
 
-## Derechos de Autor y Licencia (Spanish/Español)
+## Derechos de Autor y Licencia
 
 El sistema no oficial de *Goblin Quest* para Foundry VTT es una producción independiente de **Bernardoclon** y no está afiliado con **Rowan, Rook and Decard**. Se publica bajo la **Licencia Comunitaria de RR&D**, y algunas partes de este trabajo se publican con permiso de Rowan, Rook and Decard. *Goblin Quest* es propiedad intelectual (copyright) de Rowan, Rook and Decard. Puedes obtener más información y apoyar estos juegos en [https://rowanrookanddecard.com](https://rowanrookanddecard.com).
