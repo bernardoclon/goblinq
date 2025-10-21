@@ -4,8 +4,9 @@ export class GMPanel extends Application {
     constructor(options = {}) {
         super(options);
         GMPanel.#instance = this;
-        // Subscribirse a cambios en las configuraciones
-        this.#subscribeToSettings();
+        // Track whether hooks are registered (only while the panel is open)
+        this._hooksRegistered = false;
+        this._hookHandlers = {};
     }
 
     static getInstance() {
@@ -33,31 +34,52 @@ export class GMPanel extends Application {
         }
     }
 
-    #subscribeToSettings() {
-        // Hook para cambios en configuraciones globales
-        Hooks.on("updateSetting", (setting) => {
-            if (setting.key === "goblin-quest-system.globalTasks" && game.user.isGM) {
-                this.render(true);
-            }
-        });
+    /**
+     * Register hooks while the panel is open and active.
+     * These hooks will only re-render the panel if it's already visible, preventing auto-opening.
+     */
+    _registerHooks() {
+        if (this._hooksRegistered) return;
 
-        // Hook para cuando se crea un nuevo actor
-        Hooks.on("createActor", (actor) => {
+        this._hookHandlers.updateSetting = (setting) => {
+            if (setting.key === "goblin-quest-system.globalTasks" && game.user.isGM) {
+                if (this.rendered) this.render(true);
+            }
+        };
+
+        this._hookHandlers.createActor = (actor) => {
             if (actor.type === "clan" && game.user.isGM) {
                 console.log("GM Panel | New clan actor created:", actor.name);
-                this.render(true);
+                if (this.rendered) this.render(true);
             }
-        });
+        };
 
-        // Hook para cuando se elimina un actor
-        Hooks.on("deleteActor", (actor) => {
+        this._hookHandlers.deleteActor = (actor) => {
             if (actor.type === "clan" && game.user.isGM) {
                 console.log("GM Panel | Clan actor deleted:", actor.name);
-                this.render(true);
+                if (this.rendered) this.render(true);
             }
-        });
+        };
 
+        Hooks.on("updateSetting", this._hookHandlers.updateSetting);
+        Hooks.on("createActor", this._hookHandlers.createActor);
+        Hooks.on("deleteActor", this._hookHandlers.deleteActor);
+
+        this._hooksRegistered = true;
         console.log("GM Panel | Event listeners registered for actor changes");
+    }
+
+    /**
+     * Unregister hooks when the panel is closed to avoid re-opening.
+     */
+    _unregisterHooks() {
+        if (!this._hooksRegistered) return;
+        Hooks.off("updateSetting", this._hookHandlers.updateSetting);
+        Hooks.off("createActor", this._hookHandlers.createActor);
+        Hooks.off("deleteActor", this._hookHandlers.deleteActor);
+        this._hookHandlers = {};
+        this._hooksRegistered = false;
+        console.log("GM Panel | Event listeners unregistered for actor changes");
     }
 
     static get defaultOptions() {
@@ -204,6 +226,20 @@ export class GMPanel extends Application {
         if (GMPanel.#instance === this) {
             GMPanel.#instance = null;
             console.log("GM Panel | Instance cleared");
+        }
+        // Unregister hooks when closing the panel
+        this._unregisterHooks();
+        return result;
+    }
+
+    /**
+     * Override the render lifecycle to register hooks after rendering.
+     */
+    async render(...args) {
+        const result = await super.render(...args);
+        // Ensure hooks are registered when the panel is visible
+        if (this.element && this.element.is(':visible')) {
+            this._registerHooks();
         }
         return result;
     }

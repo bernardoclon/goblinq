@@ -1,10 +1,12 @@
 /* Logo de Pausa Cambiado y Titilante*/
 
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
+
 img.fa-spin {
-    width: 150px; /* Ajusta el tamaño */
-    height: 150px;
+    width: 200px; /* Ajusta el tamaño */
+    height: 200px;
     animation: pulsate 3s infinite ease-in-out, none !important; /* Añade el parpadeo */
-    opacity: 0.75; /* Transparencia inicial */
+    opacity: 1; /* Transparencia inicial */
   }
   
   @keyframes pulsate {
@@ -23,7 +25,7 @@ img.fa-spin {
     color: var(--color-text-light-0);
     font-size: 30px;
     text-shadow: 2px 2px 2px var(--color-shadow-dark);
-    font-family: var(--dnd5e-font-modesto);
+    font-family: "Pixelify Sans", sans-serif;
     font-weight: bold;
     letter-spacing: 2px;
     padding: 0;
