@@ -209,6 +209,8 @@ export class GMPanel extends Application {
             await game.settings.set("goblin-quest-system", "globalTasks", newSettings);
             
             console.log("Difficulty updated to:", input.value);
+            // Renderizar el panel para reflejar el cambio de dificultad
+            this.render();
             
         } catch (error) {
             console.error("Error updating difficulty:", error);
