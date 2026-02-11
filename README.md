@@ -74,6 +74,7 @@ Este sistema es un tributo no oficial, hecho con amor y mugre.
 
 **Goblin Quest** es una obra maestra del caos creada por **Rowan, Rook and Decard**.
 Todos los derechos reservados a **Rowan, Rook and Decard**. Id a comprar sus libros, ¡tienen dibujos bonitos!
+
 https://rowanrookanddecard.com/
 
 *Programado por un goblin tecleando muy rápido antes de que venga el jefe.*
