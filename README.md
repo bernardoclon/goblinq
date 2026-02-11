@@ -51,6 +51,7 @@ Hojas diseñadas para que se vean bien, incluso cuando están manchadas de sangr
 https://raw.githubusercontent.com/bernardoclon/goblinq/refs/heads/main/system.json
 ```
 *(Nota del Gran Jefe Goblin: Asegúrate de poner el link correcto de tu repo aquí, o no pasará nada y te verás tonto).*
+
 5. Dale a **Install**. Si la computadora empieza a humear, es buena señal.
 
 ---
