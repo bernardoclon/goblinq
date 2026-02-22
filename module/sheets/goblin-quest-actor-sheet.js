@@ -386,32 +386,46 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             }
 
             // Jugadores: Elegir entre subir o dibujar
+            const currentImage = foundry.utils.getProperty(this.actor, fieldPath);
+            // Solo permitir editar si es un dibujo generado por el sistema (PNG Data URL)
+            const isDrawing = currentImage && currentImage.startsWith("data:image/png");
+
+            const buttons = {
+                upload: {
+                    label: "Subir Imagen",
+                    icon: '<i class="fas fa-upload"></i>',
+                    callback: () => {
+                        const fileInput = document.createElement('input');
+                        fileInput.type = 'file';
+                        fileInput.accept = 'image/*';
+                        fileInput.onchange = event => {
+                            const file = event.target.files[0];
+                            if (file) {
+                                this._processAndSaveImage(file, fieldPath);
+                            }
+                        };
+                        fileInput.click();
+                    }
+                },
+                draw: {
+                    label: "Dibujar",
+                    icon: '<i class="fas fa-paint-brush"></i>',
+                    callback: () => this._openDrawingDialog(fieldPath)
+                }
+            };
+
+            if (isDrawing) {
+                buttons.edit = {
+                    label: "Editar",
+                    icon: '<i class="fas fa-edit"></i>',
+                    callback: () => this._openDrawingDialog(fieldPath, currentImage)
+                };
+            }
+
             new Dialog({
                 title: "Personalizar Goblin",
                 content: "<p style='text-align: center; margin-bottom: 10px;'>¿Cómo quieres representar a este goblin?</p>",
-                buttons: {
-                    upload: {
-                        label: "Subir Imagen",
-                        icon: '<i class="fas fa-upload"></i>',
-                        callback: () => {
-                            const fileInput = document.createElement('input');
-                            fileInput.type = 'file';
-                            fileInput.accept = 'image/*';
-                            fileInput.onchange = event => {
-                                const file = event.target.files[0];
-                                if (file) {
-                                    this._processAndSaveImage(file, fieldPath);
-                                }
-                            };
-                            fileInput.click();
-                        }
-                    },
-                    draw: {
-                        label: "Dibujar",
-                        icon: '<i class="fas fa-paint-brush"></i>',
-                        callback: () => this._openDrawingDialog(fieldPath)
-                    }
-                },
+                buttons: buttons,
                 default: "draw",
                 render: (html) => {
                     // Estilizar botones para que coincidan con el sistema
@@ -504,9 +518,10 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
     /**
      * Abre un diálogo con canvas para dibujar el goblin sobre la silueta
      * @param {string} fieldPath - El path del campo a actualizar
+     * @param {string|null} initialImage - Imagen inicial opcional para editar
      * @private
      */
-    _openDrawingDialog(fieldPath) {
+    _openDrawingDialog(fieldPath, initialImage = null) {
         const content = `
             <div class="goblin-drawing-tool">
                 <div style="margin-bottom: 10px; display: flex; gap: 5px; align-items: center; justify-content: center; flex-wrap: wrap;">
@@ -593,8 +608,9 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                 
                 // Cargar silueta base
                 const img = new Image();
+                img.crossOrigin = "Anonymous";
                 img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                img.src = "systems/goblin-quest-system/assets/silueta.png";
+                img.src = initialImage || "systems/goblin-quest-system/assets/silueta.png";
                 
                 // Helper: Actualizar previsualización
                 const updatePreview = () => {
