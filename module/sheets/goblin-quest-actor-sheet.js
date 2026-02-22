@@ -338,6 +338,369 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
 
         // Single view toggle listener
         html.find('.single-view-toggle').click(this._onSingleViewToggle.bind(this));
+
+        // Listener for goblin images to open FilePicker
+        const goblinImages = html.find('.goblin-image-container img');
+        goblinImages.css('cursor', 'pointer');
+        goblinImages.click(this._onGoblinImageClick.bind(this));
+    }
+
+    /**
+     * Handle click on goblin image to open file picker
+     * @param {Event} event 
+     * @private
+     */
+    _onGoblinImageClick(event) {
+        event.preventDefault();
+        const img = event.currentTarget;
+        const card = $(img).closest('.goblin-card');
+        
+        // Método más robusto: Usar el índice de la tarjeta en el DOM
+        // Asumimos que las tarjetas se renderizan en orden (goblin1, goblin2, etc.)
+        const allCards = this.element.find('.goblin-card');
+        const index = allCards.index(card);
+        
+        if (index > -1) {
+            const goblinIndex = index + 1; // 1-based index
+            const fieldPath = `system.goblins.goblin${goblinIndex}.img`;
+            
+            // Lógica diferenciada: GM usa FilePicker
+            if (game.user.isGM) {
+                let currentImage = foundry.utils.getProperty(this.actor, fieldPath) || "icons/svg/mystery-man.svg";
+
+                // Si es data URL o muy larga, usar ruta válida por defecto para evitar errores
+                if (currentImage.includes("data:") || currentImage.length > 256) {
+                    currentImage = "icons/svg/mystery-man.svg";
+                }
+
+                const fp = new FilePicker({
+                    type: "image",
+                    current: currentImage,
+                    callback: path => {
+                        this.actor.update({ [fieldPath]: path });
+                    },
+                    top: this.position.top + 40,
+                    left: this.position.left + 10
+                });
+                return fp.render(true);
+            }
+
+            // Jugadores: Elegir entre subir o dibujar
+            new Dialog({
+                title: "Personalizar Goblin",
+                content: "<p style='text-align: center; margin-bottom: 10px;'>¿Cómo quieres representar a este goblin?</p>",
+                buttons: {
+                    upload: {
+                        label: "Subir Imagen",
+                        icon: '<i class="fas fa-upload"></i>',
+                        callback: () => {
+                            const fileInput = document.createElement('input');
+                            fileInput.type = 'file';
+                            fileInput.accept = 'image/*';
+                            fileInput.onchange = event => {
+                                const file = event.target.files[0];
+                                if (file) {
+                                    this._processAndSaveImage(file, fieldPath);
+                                }
+                            };
+                            fileInput.click();
+                        }
+                    },
+                    draw: {
+                        label: "Dibujar",
+                        icon: '<i class="fas fa-paint-brush"></i>',
+                        callback: () => this._openDrawingDialog(fieldPath)
+                    }
+                },
+                default: "draw",
+                render: (html) => {
+                    // Estilizar botones para que coincidan con el sistema
+                    const buttons = html.find('button');
+                    buttons.css({
+                        'background': 'linear-gradient(180deg, #9CCC65 0%, #4CAF50 100%)',
+                        'color': 'white',
+                        'border': '1px solid #388E3C',
+                        'font-family': "'Metamorphous', cursive",
+                        'box-shadow': '0 2px 5px rgba(0,0,0,0.3)'
+                    });
+                    buttons.hover(
+                        function() { $(this).css('background', 'linear-gradient(180deg, #4CAF50 0%, #9CCC65 100%)'); },
+                        function() { $(this).css('background', 'linear-gradient(180deg, #9CCC65 0%, #4CAF50 100%)'); }
+                    );
+                    
+                    // Aplicar estilos del sistema manualmente para evitar conflictos de layout
+                    const dialog = html.closest('.window-app');
+                    dialog.css({
+                        'background': 'linear-gradient(135deg, #286C2D 0%, #1A4D1F 100%)',
+                        'border': '2px solid #3AA044',
+                        'border-radius': '8px',
+                        'font-family': "'Metamorphous', cursive",
+                        'color': '#E0E0E0'
+                    });
+                    dialog.find('.window-header').css({
+                        'color': '#E0E0E0',
+                        'border-bottom': '1px solid #3AA044'
+                    });
+                    dialog.find('.window-content').css({
+                        'background': 'transparent',
+                        'color': '#E0E0E0'
+                    });
+                }
+            }, {
+                classes: ["dialog"],
+                width: 400
+            }).render(true);
+            
+            return;
+        }
+        
+        console.warn("Goblin Quest System | No se pudo determinar el campo de imagen para el goblin.");
+    }
+
+    /**
+     * Procesa la imagen subida para redimensionarla y comprimirla antes de guardar
+     * @param {File} file - El archivo de imagen
+     * @param {string} fieldPath - La ruta del campo a actualizar
+     * @private
+     */
+    _processAndSaveImage(file, fieldPath) {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const img = new Image();
+            img.onload = () => {
+                const maxWidth = 300; // Tamaño suficiente para avatar y chat
+                const maxHeight = 300;
+                let width = img.width;
+                let height = img.height;
+
+                // Calcular nuevas dimensiones manteniendo aspecto
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height *= maxWidth / width;
+                        width = maxWidth;
+                    }
+                } else {
+                    if (height > maxHeight) {
+                        width *= maxHeight / height;
+                        height = maxHeight;
+                    }
+                }
+
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Convertir a WebP con calidad 0.8 (mucho más ligero)
+                const dataUrl = canvas.toDataURL('image/webp', 0.8);
+                this.actor.update({ [fieldPath]: dataUrl });
+            };
+            img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    /**
+     * Abre un diálogo con canvas para dibujar el goblin sobre la silueta
+     * @param {string} fieldPath - El path del campo a actualizar
+     * @private
+     */
+    _openDrawingDialog(fieldPath) {
+        const content = `
+            <div class="goblin-drawing-tool">
+                <div style="margin-bottom: 10px; display: flex; gap: 5px; align-items: center; justify-content: center; flex-wrap: wrap;">
+                    <label title="Color" style="display: flex; align-items: center;">
+                        <input type="color" id="brush-color" value="#000000" style="height: 30px; width: 30px; cursor: pointer; border: none; padding: 0;">
+                    </label>
+                    <label title="Tamaño" style="display: flex; align-items: center; font-size: 0.8em;">
+                        <input type="range" id="brush-size" min="1" max="30" value="5" style="width: 60px;">
+                    </label>
+                    <div class="btn-group" style="display: flex; gap: 2px; margin-left: 5px;">
+                        <button type="button" id="tool-brush" title="Pincel" style="width: 30px; height: 30px; padding: 0; background: #ddd;"><i class="fas fa-paint-brush"></i></button>
+                        <button type="button" id="tool-eraser" title="Borrador" style="width: 30px; height: 30px; padding: 0;"><i class="fas fa-eraser"></i></button>
+                        <button type="button" id="action-undo" title="Deshacer" style="width: 30px; height: 30px; padding: 0;"><i class="fas fa-undo"></i></button>
+                        <button type="button" id="clear-canvas" title="Reiniciar" style="width: 30px; height: 30px; padding: 0;"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+                <div style="text-align: center; border: 2px solid #000; display: inline-block; background: #fff; position: relative; cursor: none;">
+                    <canvas id="goblin-canvas" width="350" height="350" style="display: block;"></canvas>
+                    <div id="cursor-preview" style="pointer-events: none; position: absolute; border-radius: 50%; transform: translate(-50%, -50%); display: none; border: 1px solid #888;"></div>
+                </div>
+            </div>`;
+
+        new Dialog({
+            title: "Taller de Arte Goblin",
+            content: content,
+            buttons: {
+                save: {
+                    label: "Guardar Obra Maestra",
+                    icon: '<i class="fas fa-save"></i>',
+                    callback: (html) => {
+                        const canvas = html.find('#goblin-canvas')[0];
+                        this.actor.update({ [fieldPath]: canvas.toDataURL("image/png") });
+                    }
+                }
+            },
+            render: (html) => {
+                // Estilizar ventana y botones principales para coincidir con el sistema
+                const dialog = html.closest('.window-app');
+                dialog.css({
+                    'background': 'linear-gradient(135deg, #286C2D 0%, #1A4D1F 100%)',
+                    'border': '2px solid #3AA044',
+                    'border-radius': '8px',
+                    'font-family': "'Metamorphous', cursive",
+                    'color': '#E0E0E0'
+                });
+                dialog.find('.window-header').css({
+                    'color': '#E0E0E0',
+                    'border-bottom': '1px solid #3AA044'
+                });
+                dialog.find('.window-content').css({
+                    'background': 'transparent',
+                    'color': '#E0E0E0'
+                });
+                
+                // Estilizar botón de Guardar
+                const saveButton = dialog.find('.dialog-button');
+                saveButton.css({
+                    'background': 'linear-gradient(180deg, #9CCC65 0%, #4CAF50 100%)',
+                    'color': 'white',
+                    'border': '1px solid #388E3C',
+                    'font-family': "'Metamorphous', cursive",
+                    'box-shadow': '0 2px 5px rgba(0,0,0,0.3)'
+                });
+                saveButton.hover(
+                    function() { $(this).css('background', 'linear-gradient(180deg, #4CAF50 0%, #9CCC65 100%)'); },
+                    function() { $(this).css('background', 'linear-gradient(180deg, #9CCC65 0%, #4CAF50 100%)'); }
+                );
+                
+                // Asegurar contraste en botones de herramientas (que tienen fondo claro)
+                html.find('.btn-group button').css('color', '#333');
+
+                const canvas = html.find('#goblin-canvas')[0];
+                const ctx = canvas.getContext('2d', { willReadFrequently: true });
+                const colorInput = html.find('#brush-color');
+                const sizeInput = html.find('#brush-size');
+                const btnBrush = html.find('#tool-brush');
+                const btnEraser = html.find('#tool-eraser');
+                const preview = html.find('#cursor-preview');
+                
+                // Estado
+                let isEraser = false;
+                let history = [];
+                const MAX_HISTORY = 20;
+                
+                // Cargar silueta base
+                const img = new Image();
+                img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                img.src = "systems/goblin-quest-system/assets/silueta.png";
+                
+                // Helper: Actualizar previsualización
+                const updatePreview = () => {
+                    const size = sizeInput.val();
+                    const color = isEraser ? '#ffffff' : colorInput.val();
+                    
+                    preview.css({
+                        width: `${size}px`,
+                        height: `${size}px`,
+                        backgroundColor: color
+                    });
+                };
+
+                // Listeners de UI para previsualización
+                sizeInput.on('input', updatePreview);
+                colorInput.on('input', updatePreview);
+
+                // Helper: Guardar estado para Deshacer
+                const saveState = () => {
+                    history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+                    if (history.length > MAX_HISTORY) history.shift();
+                };
+
+                // Lógica de dibujo
+                let painting = false;
+                const getPos = (e) => {
+                    const rect = canvas.getBoundingClientRect();
+                    return {
+                        x: (e.clientX - rect.left) * (canvas.width / rect.width),
+                        y: (e.clientY - rect.top) * (canvas.height / rect.height)
+                    };
+                };
+
+                const draw = (e) => {
+                    if (!painting) return;
+                    const pos = getPos(e);
+                    ctx.lineWidth = sizeInput.val();
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
+                    
+                    if (isEraser) {
+                        ctx.strokeStyle = "#ffffff"; // Borrador pinta blanco
+                    } else {
+                        ctx.strokeStyle = colorInput.val();
+                    }
+                    
+                    ctx.lineTo(pos.x, pos.y);
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(pos.x, pos.y);
+                };
+
+                canvas.addEventListener('mousedown', (e) => { 
+                    saveState(); // Guardar antes de pintar
+                    painting = true; 
+                    ctx.beginPath();
+                    const pos = getPos(e);
+                    ctx.moveTo(pos.x, pos.y);
+                    draw(e);
+                });
+                canvas.addEventListener('mouseup', () => { painting = false; ctx.beginPath(); });
+                
+                // Actualizar posición del cursor personalizado
+                canvas.addEventListener('mousemove', (e) => {
+                    const rect = canvas.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    preview.css({ left: x + 'px', top: y + 'px', display: 'block' });
+                    draw(e);
+                });
+
+                canvas.addEventListener('mouseleave', () => { 
+                    painting = false; 
+                    ctx.beginPath(); 
+                    preview.css('display', 'none');
+                });
+                
+                // Botones de Herramientas
+                btnBrush.click(() => {
+                    isEraser = false;
+                    btnBrush.css('background', '#ddd');
+                    btnEraser.css('background', '');
+                    updatePreview();
+                });
+
+                btnEraser.click(() => {
+                    isEraser = true;
+                    btnEraser.css('background', '#ddd');
+                    btnBrush.css('background', '');
+                    updatePreview();
+                });
+
+                // Botón Deshacer
+                html.find('#action-undo').click(() => {
+                    if (history.length > 0) {
+                        ctx.putImageData(history.pop(), 0, 0);
+                    }
+                });
+
+                html.find('#clear-canvas').click(() => {
+                    saveState();
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                });
+            }
+        }, { width: 390, height: "auto" }).render(true);
     }
 
     /**
@@ -470,7 +833,31 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
 
         // --- NUEVA LÓGICA PARA EL MENSAJE DE CHAT ---
 
-        // 1. Contar éxitos y heridas con reglas especiales
+        // 1. Determinar el goblin activo (el primero que no esté muerto)
+        let activeGoblinImg = "icons/svg/mystery-man.svg";
+        let activeGoblinName = this.actor.name;
+
+        if (this.actor.system.goblins) {
+            for (let i = 1; i <= 5; i++) {
+                const goblin = this.actor.system.goblins[`goblin${i}`];
+                if (goblin) {
+                    activeGoblinImg = goblin.img || "icons/svg/mystery-man.svg";
+                    activeGoblinName = goblin.name || "Goblin";
+
+                    // Si no tiene ambas casillas de salud marcadas, es el activo
+                    if (!goblin.health.hp1 || !goblin.health.hp2) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Truncar el nombre para evitar que rompa el diseño (8 letras + ...)
+        if (activeGoblinName.length > 8) {
+            activeGoblinName = activeGoblinName.substring(0, 8) + "...";
+        }
+
+        // 2. Contar éxitos y heridas con reglas especiales
         let successes = 0;
         let wounds = 0;
         
@@ -488,7 +875,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             }
         });
 
-        // 2. Crear números en cajitas que simulan dados
+        // 3. Crear números en cajitas que simulan dados
         const diceBoxesHtml = displayedResults.map(result => {
             let displayValue = result;
             let cssClass = 'dice-box';
@@ -509,20 +896,27 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
 
         const resultsHtml = `<div class="dice-results-container">${diceBoxesHtml}</div>`;
 
-        // 3. Construir los mensajes de éxito y heridas
-        const successesMessage = `<div class="roll-summary success">Éxitos: ${successes}</div>`;
-        const woundsMessage = `<div class="roll-summary wound">Heridas: ${wounds}</div>`;
+        // 4. Construir los mensajes de éxito y heridas
+        // Estilos inline para asegurar mismo tamaño y disposición
+        const boxStyle = "flex: 1; display: flex; align-items: center; justify-content: center; height: 40px; margin: 0; box-sizing: border-box;";
+        const successesMessage = `<div class="roll-summary success" style="${boxStyle}">Éxitos: ${successes}</div>`;
+        const woundsMessage = `<div class="roll-summary wound" style="${boxStyle}">Heridas: ${wounds}</div>`;
 
         // Formatear el modificador para mostrar +1 si es positivo
         const formattedModifier = diceModifier > 0 ? `+${diceModifier}` : diceModifier;
 
         // Crear el texto descriptivo para el mensaje de chat
         const flavorText = `
-            <div class="goblin-roll">
-                El ${this.actor.name} lanza ${actualDiceToRoll} dados [Aplicando ${formattedModifier}]
+            <div class="goblin-roll" style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                <img src="${activeGoblinImg}" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #333; object-fit: cover; box-shadow: 0 2px 5px rgba(0,0,0,0.3); margin-bottom: 5px;" title="Goblin Activo" />
+                <div style="text-align: center; margin-bottom: 5px;">
+                    ${activeGoblinName} lanza ${actualDiceToRoll} dados [Aplicando ${formattedModifier}]
+                </div>
                 ${resultsHtml}
-                ${successesMessage}
-                ${woundsMessage}
+                <div style="display: flex; width: 100%; gap: 10px; justify-content: space-between; margin-top: 5px;">
+                    ${successesMessage}
+                    ${woundsMessage}
+                </div>
             </div>
         `;
 
