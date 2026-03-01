@@ -346,6 +346,18 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
 
         // Listener for download image button
         html.find('.download-image').click(this._onDownloadImage.bind(this));
+
+        // Ocultar el botón de descarga si la imagen no es un dibujo (data:image/png)
+        html.find('.goblin-image-container').each((i, el) => {
+            const img = $(el).find('img');
+            const btn = $(el).find('.download-image');
+            const src = img.attr('src');
+            
+            // Solo mostrar si es un dibujo generado por el sistema (PNG Data URL)
+            if (!src || !src.startsWith('data:image/png')) {
+                btn.hide();
+            }
+        });
     }
 
     /**

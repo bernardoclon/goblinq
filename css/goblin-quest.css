@@ -260,7 +260,7 @@
 }
 .goblin-quest-sheet .goblin-image-container {
     flex: 0 0 180px;
-    min-height: 190px;
+    height: 190px;
     border: 2px solid #33691E;
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
