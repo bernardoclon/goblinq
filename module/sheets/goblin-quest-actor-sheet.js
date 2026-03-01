@@ -203,7 +203,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             classes: ["goblin-quest", "sheet", "actor"],
             template: "systems/goblin-quest-system/templates/actor-sheet.html",
             width: 400, // Ancho inicial de la hoja
-            height: 750, // Reducido para mejor adaptación inicial
+            height: 710, // Reducido para mejor adaptación inicial
             tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "details"}] // Cambiado a 'details' para una pestaña más genérica
         });
     }
@@ -343,6 +343,9 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         const goblinImages = html.find('.goblin-image-container img');
         goblinImages.css('cursor', 'pointer');
         goblinImages.click(this._onGoblinImageClick.bind(this));
+
+        // Listener for download image button
+        html.find('.download-image').click(this._onDownloadImage.bind(this));
     }
 
     /**
@@ -350,6 +353,57 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
      * @param {Event} event 
      * @private
      */
+    _onDownloadImage(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const button = event.currentTarget;
+        const imgElement = $(button).siblings('img')[0];
+        
+        if (!imgElement || !imgElement.src) return;
+
+        const src = imgElement.src;
+        const goblinName = imgElement.title || "Goblin";
+        
+        // Create a canvas to resize/format the image
+        const canvas = document.createElement('canvas');
+        canvas.width = 1024;
+        canvas.height = 1024;
+        const ctx = canvas.getContext('2d');
+        
+        const img = new Image();
+        img.crossOrigin = "Anonymous";
+        
+        img.onload = () => {
+            // Calculate dimensions to simulate object-fit: cover
+            const sWidth = img.width;
+            const sHeight = img.height;
+            const dWidth = 1024;
+            const dHeight = 1024;
+            
+            const scale = Math.max(dWidth / sWidth, dHeight / sHeight);
+            
+            const renderWidth = sWidth * scale;
+            const renderHeight = sHeight * scale;
+            const offsetX = (dWidth - renderWidth) / 2;
+            const offsetY = (dHeight - renderHeight) / 2;
+            
+            ctx.drawImage(img, offsetX, offsetY, renderWidth, renderHeight);
+            
+            // Create download link
+            const link = document.createElement('a');
+            link.download = `${goblinName.replace(/\s+/g, '_')}_1024.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        };
+        
+        img.onerror = () => {
+            ui.notifications.error("Error al procesar la imagen para descarga.");
+        };
+        
+        img.src = src;
+    }
+
     _onGoblinImageClick(event) {
         event.preventDefault();
         const img = event.currentTarget;

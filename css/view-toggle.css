@@ -52,7 +52,7 @@
 .task-level-container {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 2px;
     margin: 2px 0;
     padding: 3px 6px;
     background: rgba(58, 160, 68, 0.05);
@@ -67,7 +67,9 @@
 
 /* Level Header - Compact level name */
 .level-header {
-    flex: 0 0 120px;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .level-header .task-level-label {
@@ -79,6 +81,8 @@
     font-weight: bold;
     text-align: left;
     padding: 2px 4px;
+    margin: 0;
+    flex-shrink: 1; /* Allow the input to shrink, overriding other styles */
 }
 
 .level-header .task-level-label:focus {
@@ -90,24 +94,32 @@
 .level-content {
     display: flex;
     align-items: center;
-    gap: 8px;
-    flex: 1;
+    gap: 4px;
+    flex: 0 0 auto;
+    max-width: none;
 }
 
 /* Checkbox Section - Inline checkboxes */
 .checkbox-section {
-    flex: 1;
+    flex: 0 0 auto;
+    max-width: 100%;
 }
 
 .checkbox-section .checkbox-group {
     display: flex;
-    gap: 5px;
+    gap: 2px;
+    gap: 1px; /* Reduce space between checkboxes */
     align-items: center;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
 }
 
 .checkbox-section .checkbox-group input[type="checkbox"] {
     width: 16px;
     height: 16px;
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
     accent-color: #4CAF50;
     cursor: not-allowed;
 }

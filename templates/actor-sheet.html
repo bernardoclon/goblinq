@@ -61,6 +61,7 @@
                     <div class="goblin-card flexrow">
                         <div class="goblin-image-container">
                             <img class="profile-img" src="{{goblin.img}}" data-edit="system.goblins.{{key}}.img" title="{{goblin.name}}" alt="Image of a Goblin"/>
+                            <a class="download-image" title="Descarga tu Goblin"><i class="fas fa-download"></i></a>
                         </div>
                         <div class="goblin-info flexcol">
                             <h2 class="goblin-name"><input name="system.goblins.{{key}}.name" type="text" value="{{goblin.name}}" placeholder="Nombre del Goblin"/></h2>
@@ -111,10 +112,6 @@
                                     {{/each}}
                                 </div>
                             </div>
-                            <div class="complication-section">
-                                <label class="complication-label">Complicación</label>
-                                <input type="checkbox" class="complication-checkbox" disabled {{#if level.complication}}checked{{/if}}>
-                            </div>
                         </div>
                     </div>
                     {{/with}}
@@ -131,10 +128,6 @@
                                     {{/each}}
                                 </div>
                             </div>
-                            <div class="complication-section">
-                                <label class="complication-label">Complicación</label>
-                                <input type="checkbox" class="complication-checkbox" disabled {{#if level.complication}}checked{{/if}}>
-                            </div>
                         </div>
                     </div>
                     {{/with}}
@@ -150,10 +143,6 @@
                                     <input type="checkbox" disabled {{#if (lookup level.checkboxStates i)}}checked{{/if}}>
                                     {{/each}}
                                 </div>
-                            </div>
-                            <div class="complication-section">
-                                <label class="complication-label">Complicación</label>
-                                <input type="checkbox" class="complication-checkbox" disabled {{#if level.complication}}checked{{/if}}>
                             </div>
                         </div>
                     </div>
@@ -176,10 +165,6 @@
                                     {{/each}}
                                 </div>
                             </div>
-                            <div class="complication-section">
-                                <label class="complication-label">Complicación</label>
-                                <input type="checkbox" class="complication-checkbox" disabled {{#if level.complication}}checked{{/if}}>
-                            </div>
                         </div>
                     </div>
                     {{/with}}
@@ -196,10 +181,6 @@
                                     {{/each}}
                                 </div>
                             </div>
-                            <div class="complication-section">
-                                <label class="complication-label">Complicación</label>
-                                <input type="checkbox" class="complication-checkbox" disabled {{#if level.complication}}checked{{/if}}>
-                            </div>
                         </div>
                     </div>
                     {{/with}}
@@ -215,10 +196,6 @@
                                     <input type="checkbox" disabled {{#if (lookup level.checkboxStates i)}}checked{{/if}}>
                                     {{/each}}
                                 </div>
-                            </div>
-                            <div class="complication-section">
-                                <label class="complication-label">Complicación</label>
-                                <input type="checkbox" class="complication-checkbox" disabled {{#if level.complication}}checked{{/if}}>
                             </div>
                         </div>
                     </div>
@@ -241,10 +218,6 @@
                                     {{/each}}
                                 </div>
                             </div>
-                            <div class="complication-section">
-                                <label class="complication-label">Complicación</label>
-                                <input type="checkbox" class="complication-checkbox" disabled {{#if level.complication}}checked{{/if}}>
-                            </div>
                         </div>
                     </div>
                     {{/with}}
@@ -261,10 +234,6 @@
                                     {{/each}}
                                 </div>
                             </div>
-                            <div class="complication-section">
-                                <label class="complication-label">Complicación</label>
-                                <input type="checkbox" class="complication-checkbox" disabled {{#if level.complication}}checked{{/if}}>
-                            </div>
                         </div>
                     </div>
                     {{/with}}
@@ -280,10 +249,6 @@
                                     <input type="checkbox" disabled {{#if (lookup level.checkboxStates i)}}checked{{/if}}>
                                     {{/each}}
                                 </div>
-                            </div>
-                            <div class="complication-section">
-                                <label class="complication-label">Complicación</label>
-                                <input type="checkbox" class="complication-checkbox" disabled {{#if level.complication}}checked{{/if}}>
                             </div>
                         </div>
                     </div>

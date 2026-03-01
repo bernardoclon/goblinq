@@ -11,10 +11,13 @@
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6);
     color: #E0E0E0;
     font-size: 14px;
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: hidden;
     min-width: 600px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 /* GM Panel Content */
@@ -31,25 +34,32 @@
     border: 2px solid #3AA044;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}-quest-sheet.actor {
+}
+.goblin-quest.sheet.actor {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     height: 100%;
 }
+
 .goblin-quest{
     min-width: 615px;
-    min-height: 750px;
+    min-height: 710px;
 }
 .goblin-quest-sheet .left-panel {
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
     border-radius: 8px;
     background: #004e07;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-    align-content: center;
-    justify-content: center;
-    height: auto;
+    flex: 1;
+    min-height: 0;
+}
+.goblin-quest-sheet .character-section {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
 }
 .goblin-quest-sheet .tasks-section {
     background: #004e07;
@@ -93,9 +103,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 5%;
+    padding: 15px 10px 10px;
     width: 100%;
-    height: 100%;
+    flex-shrink: 0;
 }
 .goblin-quest-sheet .clan-name-input input {
     background: rgba(255, 255, 255, 0.1);
@@ -207,6 +217,7 @@
     padding: 6px 8px;
     border-bottom: 2px solid #3AA044;
     background: #286C2D;
+    flex-shrink: 0;
 }
 .goblin-quest-sheet .goblin-tabs .item {
     padding: 8px 15px;
@@ -230,6 +241,11 @@
     padding: 10px 15px;
     background: #4CAF50;
     border-bottom: 2px solid #286C2D;
+    flex-grow: 1;
+    overflow-y: auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
 }
 .goblin-quest-sheet .goblin-card {
     background: #F8FBEF;
@@ -239,26 +255,56 @@
     display: flex;
     gap: 10px;
     border: 1px solid #7CB342;
-    align-items: flex-start;
+    align-items: stretch;
+    flex: 1;
 }
 .goblin-quest-sheet .goblin-image-container {
-    flex: 0 0 70px;
-    height: 70px;
+    flex: 0 0 180px;
+    min-height: 190px;
     border: 2px solid #33691E;
     border-radius: 8px;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
     overflow: hidden;
+    position: relative;
 }
 .goblin-quest-sheet .goblin-image-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
+.goblin-quest-sheet .download-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #FFF;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s ease;
+    font-size: 14px;
+    z-index: 10;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.goblin-quest-sheet .goblin-image-container:hover .download-image {
+    opacity: 1;
+}
+.goblin-quest-sheet .download-image:hover {
+    background: #4CAF50;
+    transform: scale(1.1);
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
 .goblin-quest-sheet .goblin-info {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     flex-grow: 1;
+    justify-content: space-evenly;
 }
 .goblin-quest-sheet .goblin-name input {
     font-size: 18px;
@@ -266,7 +312,7 @@
     color: #212121;
     text-shadow: 0.5px 0.5px 0.5px rgba(255,255,255,0.3);
     width: 100%;
-    height: 50px;
+    height: 35px;
 }
 .goblin-quest-sheet .goblin-health {
     display: flex;
@@ -287,6 +333,7 @@
 .goblin-quest-sheet .health-checkboxes {
     justify-content: flex-start;
     padding: 10px;
+    gap: 10px;
 }
 .goblin-quest-sheet .objective-section {
     background: #33691E;
@@ -479,6 +526,12 @@
     border: 1px solid #689F38;
     border-radius: 4px;
     padding: 2px 5px;
+}
+
+.goblin-quest-sheet .goblin-tab.active {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 /* Estilos para los resultados de dados en el chat */
@@ -727,8 +780,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    justify-content: space-between;
-    gap: 3px;
+    gap: 5px;
     margin-bottom: 3px;
     background: rgba(255, 255, 255, 0.5);
     border-radius: 4px;
@@ -740,22 +792,43 @@
     background: rgba(255, 255, 255, 0.7);
 }
 
-.gm-panel .task-level-label,
-.gm-panel .challenge-label {
+.gm-panel .task-level-label {
     font-size: 11px;
     color: #212121;
     margin-right: 2px;
+    flex: 1;
+    width: auto;
+    min-width: 0;
+}
+
+.gm-panel .challenge-label {
+    font-size: 10px;
+    color: #212121;
+    margin-bottom: 0;
+    text-align: center;
+    line-height: 1;
 }
 
 .gm-panel .challenge-group {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 2px;
-    padding: 0 2px;
+    justify-content: center;
+    gap: 0;
+    padding: 0 6px;
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 4px;
+    margin-left: 5%;
+    width: 80px;
+    flex: 0 0 80px;
+    margin-bottom: 2px;
 }
 
 .gm-panel .challenge-group input[type="checkbox"] {
-    width: 16px;
+    width: 14px;
+    height: 14px;
+    margin: 0;
 }
 
 /* Difficulty Section Styles */
@@ -902,6 +975,7 @@
     display: flex;
     gap: 1px;
     padding: 0 2px;
+    flex: 0 0 auto;
 }
 
 .gm-panel .checkbox-group input[type="checkbox"] {
@@ -924,4 +998,45 @@
     align-items: stretch;
     gap: 5px;
     background: linear-gradient(135deg, #286C2D 0%, #1A4D1F 100%);
+}
+
+.goblin-quest-sheet .task-level-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    gap: 8px; /* Aumentamos un poco el espacio para que no se vea tan apretado */
+    margin-bottom: 2px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+    padding: 2px 4px;
+}
+
+.goblin-quest-sheet .task-level-container .level-header {
+    flex: 1;
+    min-width: 0;
+    padding-right: 8%;
+}
+
+.goblin-quest-sheet .task-level-container .task-level-label {
+    width: 100%;
+    min-width: 0;
+    margin-right: 0;
+    flex-shrink: 1;
+}
+
+.goblin-quest-sheet .task-level-container .level-content {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.goblin-quest-sheet .task-level-container .checkbox-group {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 2px;
+}
+
+.goblin-quest-sheet .objective-sectionp {
+    width: 100% !important; 
 }
