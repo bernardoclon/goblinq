@@ -203,7 +203,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             classes: ["goblin-quest", "sheet", "actor"],
             template: "systems/goblin-quest-system/templates/actor-sheet.html",
             width: 400, // Ancho inicial de la hoja
-            height: 710, // Reducido para mejor adaptación inicial
+            height: 720, // Reducido para mejor adaptación inicial
             tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "details"}] // Cambiado a 'details' para una pestaña más genérica
         });
     }
@@ -298,14 +298,10 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
 
         // Initialize dicePool if not present or incomplete
         if (!systemData.dicePool) {
-            systemData.dicePool = { value: 0, max: 10 };
-        }
-        // Ensure dicePool.max is a number and has a default
-        if (typeof systemData.dicePool.max !== 'number') {
-            systemData.dicePool.max = 10; // Default max value
+            systemData.dicePool = { value: 0 };
         }
         // Ensure dicePool.value is a number and within bounds
-        if (typeof systemData.dicePool.value !== 'number' || systemData.dicePool.value < 0 || systemData.dicePool.value > systemData.dicePool.max) {
+        if (typeof systemData.dicePool.value !== 'number' || systemData.dicePool.value < 0) {
             systemData.dicePool.value = 0; // Default or reset if invalid
         }
 
@@ -326,11 +322,9 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         // Everything below here is only needed if the sheet is editable
         if (!this.options.editable) return;
 
-        // Listener for the dice pool checkboxes
-        html.find('.dice-pool .checkbox-group input[type="checkbox"]').change(this._onDicePoolChange.bind(this));
+        // Listener for the dice pool input to enforce max value
+        html.find('.dice-pool-input').on('input change', this._onDicePoolValueChange.bind(this));
 
-        // Listener for goblin health checkboxes - SIMPLIFICADO
-        // Foundry VTT maneja la actualización directamente con el atributo 'name' del input
         html.find('.goblin-health .checkbox-group input[type="checkbox"]').change(this._onGoblinHealthChange.bind(this));
 
         // Roll button listener
@@ -379,8 +373,8 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         
         // Create a canvas to resize/format the image
         const canvas = document.createElement('canvas');
-        canvas.width = 1024;
-        canvas.height = 1024;
+        canvas.width = 1920;
+        canvas.height = 1920;
         const ctx = canvas.getContext('2d');
         
         const img = new Image();
@@ -390,8 +384,8 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             // Calculate dimensions to simulate object-fit: cover
             const sWidth = img.width;
             const sHeight = img.height;
-            const dWidth = 1024;
-            const dHeight = 1024;
+            const dWidth = 1920;
+            const dHeight = 1920;
             
             const scale = Math.max(dWidth / sWidth, dHeight / sHeight);
             
@@ -404,7 +398,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             
             // Create download link
             const link = document.createElement('a');
-            link.download = `${goblinName.replace(/\s+/g, '_')}_1024.png`;
+            link.download = `${goblinName.replace(/\s+/g, '_')}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
         };
@@ -676,7 +670,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                 const img = new Image();
                 img.crossOrigin = "Anonymous";
                 img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                img.src = initialImage || "systems/goblin-quest-system/assets/silueta.png";
+                img.src = initialImage || "systems/goblin-quest-system/assets/silueta.webp";
                 
                 // Helper: Actualizar previsualización
                 const updatePreview = () => {
@@ -786,51 +780,21 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     /**
-     * Handle changes to the dice pool checkboxes.
-     * Simply updates the DOM, the actor update will happen on form submission.
-     * @param {Event} event The change event.
+     * Handle changes to the dice pool input to enforce a max value.
+     * This only updates the DOM value and does not trigger an actor update,
+     * which prevents re-rendering issues that could interfere with button clicks.
+     * @param {Event} event The input or change event.
      * @private
      */
-    async _onDicePoolChange(event) {
-        const checkbox = event.currentTarget;
-        const group = checkbox.closest('.checkbox-group');
+    _onDicePoolValueChange(event) {
+        event.preventDefault();
+        const input = event.currentTarget;
         
-        // Obtener todos los checkboxes del grupo
-        const checkboxes = $(group).find('input[type="checkbox"]');
-        const clickedIdx = parseInt(checkbox.dataset.idx, 10); // 1-based index from HTML
-
-        if (checkbox.checked) {
-            // Si este checkbox fue marcado, marca todos los checkboxes anteriores (incluido este)
-            for (let i = 0; i <= clickedIdx; i++) { // Cambiado a 0-based
-                if (checkboxes[i]) {
-                    checkboxes[i].checked = true;
-                }
-            }
-        } else {
-            // Si este checkbox fue desmarcado, desmarca todos los checkboxes desde este en adelante
-            for (let i = clickedIdx; i < checkboxes.length; i++) { // Cambiado a 0-based
-                if (checkboxes[i]) {
-                    checkboxes[i].checked = false;
-                }
-            }
+        // If the entered value is greater than 99, automatically set it to 99.
+        if (parseInt(input.value, 10) > 99) {
+            input.value = 99;
         }
-
-        // Calcular el nuevo conteo después de la manipulación del DOM
-        let newCount = 0;
-        checkboxes.each(function(index, el) {
-            if (el.checked) {
-                newCount++;
-            }
-        });
-        
-        // IMPORTANTE: Persistir el nuevo valor de dicePool.value en el actor inmediatamente.
-        // Esto asegura que el estado se guarde y se recupere correctamente en las re-renderizaciones.
-        await this.actor.update({ "system.dicePool.value": newCount });
-        console.log(`_onDicePoolChange: Actor.system.dicePool.value actualizado y persistido a ${newCount}.`);
-
-        // No es necesario establecer this.actor.system.dicePool.value = newCount; aquí, ya que actor.update lo maneja.
     }
-
 
     /**
      * Handle changes to goblin health checkboxes.
@@ -856,17 +820,17 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
 
         console.log("Botón 'Tirada' clickeado!");
 
-        // Contar los checkboxes de # Dados que están actualmente marcados en el DOM
-        const dicePoolCheckboxes = this.element.find('.dice-pool .checkbox-group input[type="checkbox"]');
-        let checkedDiceCount = 0;
-        dicePoolCheckboxes.each(function() {
-            if ($(this).is(':checked')) {
-                checkedDiceCount++;
-            }
-        });
+        // Obtener el valor del input de dados
+        const dicePoolInput = this.element.find('.dice-pool-input');
+        let dicePoolValue = 0;
         
-        // Usar la cuenta de checkboxes marcados del DOM para la tirada actual
-        let dicePoolValue = checkedDiceCount; 
+        if (dicePoolInput.length > 0) {
+            dicePoolValue = parseInt(dicePoolInput.val());
+            if (isNaN(dicePoolValue) || dicePoolValue < 0) dicePoolValue = 0;
+            if (dicePoolValue > 99) dicePoolValue = 99;
+        } else {
+            dicePoolValue = this.actor.system.dicePool.value || 0;
+        }
 
         // Obtener el modificador de la dificultad global desde las configuraciones
         const globalSettings = game.settings.get("goblin-quest-system", "globalTasks");
@@ -889,8 +853,8 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         
         console.log(`Dificultad global: ${globalSettings.difficulty}, Modificador aplicado: ${diceModifier}`);
 
-        // Calcular la cantidad de dados a tirar: checkboxes marcados + 1
-        const actualDiceToRoll = dicePoolValue + 1; // Se añade +1 como solicitado por el usuario
+        // Calcular la cantidad de dados a tirar: valor del input + 1
+        const actualDiceToRoll = dicePoolValue + 1;
 
         // La cadena de tirada usa d6, lo que significa que los resultados de cada dado individual estarán entre 1 y 6.
         let rollString = `${actualDiceToRoll}d6`;
@@ -1051,13 +1015,14 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             });
         }
 
-        // Desmarcar todos los checkboxes del pool de dados después de la tirada
-        // (Esto asegura que se desmarquen *solo* los checkboxes del pool de dados)
-        dicePoolCheckboxes.prop('checked', false);
+        // Resetear el valor del input a 0 después de la tirada
+        if (dicePoolInput.length > 0) {
+            dicePoolInput.val(0);
+        }
 
-        // Actualizar el valor de dicePool a 0 en el actor para reflejar que los checkboxes están desmarcados
+        // Actualizar el valor de dicePool a 0 en el actor
         await this.actor.update({ "system.dicePool.value": 0 });
-        console.log("Todos los checkboxes del pool de dados desmarcados y dicePool.value establecido en 0.");
+        console.log("Input de dados reseteado y dicePool.value establecido en 0.");
     }
 
     /**

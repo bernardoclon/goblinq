@@ -211,8 +211,7 @@ Hooks.once("setup", function() {
                     })
                 }),
                 dicePool: new fields.SchemaField({
-                    value: new fields.NumberField({ required: true, integer: true, initial: 0, min: 0 }),
-                    max: new fields.NumberField({ required: true, integer: true, initial: 10, min: 0 })
+                    value: new fields.NumberField({ required: true, integer: true, initial: 0, min: 0 })
                 }),
                 diceModifier: new fields.NumberField({ required: true, integer: true, initial: 0 })
             };

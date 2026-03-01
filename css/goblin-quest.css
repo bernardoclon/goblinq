@@ -1,7 +1,7 @@
 *, *::before, *::after {
     box-sizing: border-box;
 }
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Inter:wght@400;700&family=Metamorphous&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Inter:wght@400;700&family=Luckiest+Guy&family=Metamorphous&display=swap');
 
 .goblin-quest-sheet {
     font-family: 'Metamorphous', cursive;    
@@ -43,7 +43,7 @@
 
 .goblin-quest{
     min-width: 615px;
-    min-height: 710px;
+    min-height: 720px;
 }
 .goblin-quest-sheet .left-panel {
     display: flex;
@@ -168,7 +168,7 @@
     margin-top: 1px;
     padding: 1px 0;
 }
-.goblin-quest-sheet .dice-pool .checkbox-group input[type="checkbox"],
+
 .goblin-quest-sheet .goblin-health .checkbox-group input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
@@ -184,7 +184,7 @@
     background-image: url('../assets/goblin.png');
     padding: 15px;
 }
-.goblin-quest-sheet .dice-pool .checkbox-group input[type="checkbox"]:checked,
+
 .goblin-quest-sheet .goblin-health .checkbox-group input[type="checkbox"]:checked {
     appearance: none;
     -webkit-appearance: none;
@@ -206,12 +206,17 @@
     flex-direction: column;
     align-items: center;
 }
-.goblin-quest-sheet .dice-pool .checkbox-group {
-    flex-wrap: wrap;
-    justify-content: center;
-    width: auto;
-    flex-direction: row;
-    gap: 3px;
+.goblin-quest-sheet .dice-pool-input {
+    font-family: 'Luckiest Guy', cursive !important;
+    font-size: 32px;
+    color: #1A4D1F;
+    text-align: center;
+    width: 110px;
+    margin: 5px 0;
+    height: 30px;
+    font-weight: bold;
+    line-height: 30px;
+    padding: 0 5px;
 }
 .goblin-quest-sheet .goblin-tabs {
     padding: 6px 8px;
@@ -428,9 +433,6 @@
     gap: 2px;
     flex-grow: 1;
     padding-right: 5px;
-}
-.goblin-quest-sheet .hidden-checkbox {
-    display: none;
 }
 .goblin-quest-sheet .dice-pool .roll-button-container {
     padding-top: 8px;
@@ -1005,7 +1007,7 @@
     flex-direction: row;
     align-items: center;
     width: 100%;
-    gap: 8px; /* Aumentamos un poco el espacio para que no se vea tan apretado */
+    gap: 8px;
     margin-bottom: 2px;
     background: rgba(255, 255, 255, 0.5);
     border-radius: 4px;

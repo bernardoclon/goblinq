@@ -73,17 +73,5 @@
       },
       "diceModifier": 0
     }
-  },
-  "Item": {
-    "types": ["basic"],
-    "templates": {
-      "base": {
-        "description": ""
-      }
-    },
-    "basic": {
-      "templates": ["base"],
-      "value": 0
-    }
   }
 }
