@@ -390,8 +390,8 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             // Calculate dimensions to simulate object-fit: cover
             const sWidth = img.width;
             const sHeight = img.height;
-            const dWidth = 1024;
-            const dHeight = 1024;
+            const dWidth = 1920;
+            const dHeight = 1920;
             
             const scale = Math.max(dWidth / sWidth, dHeight / sHeight);
             
@@ -404,7 +404,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             
             // Create download link
             const link = document.createElement('a');
-            link.download = `${goblinName.replace(/\s+/g, '_')}_1024.png`;
+            link.download = `${goblinName.replace(/\s+/g, '_')}.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
         };
@@ -676,7 +676,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                 const img = new Image();
                 img.crossOrigin = "Anonymous";
                 img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                img.src = initialImage || "systems/goblin-quest-system/assets/silueta.png";
+                img.src = initialImage || "systems/goblin-quest-system/assets/silueta.webp";
                 
                 // Helper: Actualizar previsualización
                 const updatePreview = () => {
