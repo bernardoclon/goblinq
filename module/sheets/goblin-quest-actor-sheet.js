@@ -379,8 +379,8 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         
         // Create a canvas to resize/format the image
         const canvas = document.createElement('canvas');
-        canvas.width = 1024;
-        canvas.height = 1024;
+        canvas.width = 1920;
+        canvas.height = 1920;
         const ctx = canvas.getContext('2d');
         
         const img = new Image();
