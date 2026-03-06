@@ -789,10 +789,14 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
     _onDicePoolValueChange(event) {
         event.preventDefault();
         const input = event.currentTarget;
+        const value = parseInt(input.value, 10);
         
         // If the entered value is greater than 99, automatically set it to 99.
-        if (parseInt(input.value, 10) > 99) {
+        if (value > 99) {
             input.value = 99;
+        } else if (value < 0) {
+            // Si el valor es menor a 0, establecerlo a 0
+            input.value = 0;
         }
     }
 

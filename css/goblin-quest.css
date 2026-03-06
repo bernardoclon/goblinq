@@ -508,7 +508,7 @@
     width: 100%;
     margin-top: 5px;
     display: grid;
-    grid-template-columns: 120px 1fr;
+    grid-template-columns: auto 1fr;
     align-items: center;
     gap: 10px;
 }
