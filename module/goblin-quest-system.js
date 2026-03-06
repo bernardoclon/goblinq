@@ -27,7 +27,6 @@ Hooks.once("init", async function() {
     // Access 'Actors' and 'ActorSheet' from their global namespaces.
     foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
 
-    // Luego, registramos nuestra hoja personalizada.
     foundry.documents.collections.Actors.registerSheet("goblin-quest-system", GoblinQuestActorSheet, {
         types: ["clan"], // Specifies which actor types will use this sheet (defined in template.json).
         makeDefault: true, // Sets this sheet as the default for the 'clan' type.

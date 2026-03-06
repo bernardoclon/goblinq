@@ -13,6 +13,9 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         // Current view state (to maintain it during re-renders)
         this._currentView = 'character-view';
         
+        // Store hook references for cleanup
+        this._hookIds = [];
+        
         // Subscribe to changes in global settings for real-time updates
         this._subscribeToGlobalTasksSettings();
     }
@@ -22,7 +25,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
      * @private
      */
     _subscribeToGlobalTasksSettings() {
-        Hooks.on("updateSetting", (setting) => {
+        const updateSettingId = Hooks.on("updateSetting", (setting) => {
             if (setting.key === "goblin-quest-system.globalTasks") {
                 // Smoothly update without flickering if in tasks view
                 if (this.rendered && this.element.is(":visible")) {
@@ -30,6 +33,23 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                 }
             }
         });
+        this._hookIds.push({ hook: "updateSetting", id: updateSettingId });
+
+        // Refresh when actors are created or deleted to update checkbox counts
+        const refreshOnActorChange = (actor) => {
+            if (actor.type === 'clan') {
+                if (this.rendered) {
+                    this._saveCurrentViewState();
+                    this.render(false);
+                }
+            }
+        };
+
+        const createActorId = Hooks.on("createActor", refreshOnActorChange);
+        const deleteActorId = Hooks.on("deleteActor", refreshOnActorChange);
+
+        this._hookIds.push({ hook: "createActor", id: createActorId });
+        this._hookIds.push({ hook: "deleteActor", id: deleteActorId });
     }
 
     /**
@@ -194,6 +214,13 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         this._currentView = viewName;
         
         console.log(`View state restored to: ${viewName}`);
+    }
+
+    /** @override */
+    async close(options={}) {
+        this._hookIds.forEach(h => Hooks.off(h.hook, h.id));
+        this._hookIds = [];
+        return super.close(options);
     }
 
     /** @override */
