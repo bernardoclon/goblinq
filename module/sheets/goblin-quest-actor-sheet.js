@@ -2,18 +2,18 @@
  * Extends the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-// No es necesario importar ActorSheet directamente con una ruta de módulo.
-// ActorSheet es una clase global de Foundry VTT, accesible a través de foundry.appv1.sheets.ActorSheet.
+// It's not necessary to import ActorSheet directly with a module path.
+// ActorSheet is a global Foundry VTT class, accessible via foundry.appv1.sheets.ActorSheet.
 
 export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
 
     constructor(...args) {
         super(...args);
         
-        // Estado de la vista actual (para mantenerlo durante re-renders)
+        // Current view state (to maintain it during re-renders)
         this._currentView = 'character-view';
         
-        // Subscribirse a cambios en las configuraciones globales para actualización en tiempo real
+        // Subscribe to changes in global settings for real-time updates
         this._subscribeToGlobalTasksSettings();
     }
 
@@ -24,7 +24,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
     _subscribeToGlobalTasksSettings() {
         Hooks.on("updateSetting", (setting) => {
             if (setting.key === "goblin-quest-system.globalTasks") {
-                // Actualizar suavemente sin parpadeo si está en vista de tareas
+                // Smoothly update without flickering if in tasks view
                 if (this.rendered && this.element.is(":visible")) {
                     this._smoothUpdateTasks();
                 }
@@ -40,7 +40,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         const tasksSection = this.element.find('.tasks-section')[0];
         const tasksPanel = this.element.find('.readonly-tasks-panel');
         
-        // Si no estamos en vista de tareas, usar re-render normal
+        // If not in tasks view, use normal re-render
         if (!tasksSection || tasksSection.hidden || tasksPanel.length === 0) {
             this._saveCurrentViewState();
             this.render(false);
@@ -48,7 +48,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         }
 
         try {
-            // Obtener los datos actualizados directamente
+            // Get updated data directly
             const globalTasks = game.settings.get("goblin-quest-system", "globalTasks") || {
                 objective: "",
                 tasks: {
@@ -58,13 +58,13 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                 }
             };
             
-            // Actualizar objetivo
+            // Update objective
             const objectiveTextarea = tasksPanel.find('.objective-title textarea');
             if (objectiveTextarea.length > 0 && objectiveTextarea.val() !== globalTasks.objective) {
                 objectiveTextarea.val(globalTasks.objective || '');
             }
             
-            // Actualizar cada tarea
+            // Update each task
             this._updateTaskDirectly(tasksPanel, 1, globalTasks.tasks.task1 || {});
             this._updateTaskDirectly(tasksPanel, 2, globalTasks.tasks.task2 || {});
             this._updateTaskDirectly(tasksPanel, 3, globalTasks.tasks.task3 || {});
@@ -198,13 +198,13 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
 
     /** @override */
     static get defaultOptions() {
-        // Usar foundry.utils.mergeObject para compatibilidad futura
+        // Use foundry.utils.mergeObject for future compatibility
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["goblin-quest", "sheet", "actor"],
             template: "systems/goblin-quest-system/templates/actor-sheet.html",
-            width: 400, // Ancho inicial de la hoja
-            height: 720, // Reducido para mejor adaptación inicial
-            tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "details"}] // Cambiado a 'details' para una pestaña más genérica
+            width: 400, // Initial sheet width
+            height: 720, // Reduced for better initial fit
+            tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "details"}] // Changed to 'details' for a more generic tab
         });
     }
 
@@ -212,20 +212,20 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
     getData() {
         const data = super.getData();
 
-        // Obtener una copia mutable de los datos del sistema del actor,
-        // asegurándose de que si es un actor nuevo y `data.actor.system` no está completamente poblado,
-        // se use el esquema por defecto del prototipo del actor.
-        // Acceder a this.actor.system directamente ya que super.getData() debería inicializarlo.
+        // Get a mutable copy of the actor's system data,
+        // ensuring that if it's a new actor and `data.actor.system` is not fully populated,
+        // the default schema from the actor's prototype is used.
+        // Access this.actor.system directly as super.getData() should initialize it.
         let systemData = foundry.utils.deepClone(this.actor.system);
 
-        // Obtener los datos de tareas globales para la vista de tareas
+        // Get global task data for the tasks view
         const globalTasksSettings = game.settings.get("goblin-quest-system", "globalTasks");
         const globalTasks = foundry.utils.deepClone(globalTasksSettings);
 
-        // Calcular el número de actores para los checkboxes
+        // Calculate the number of actors for the checkboxes
         const numActors = game.actors.filter(actor => actor.type === 'clan').length;
 
-        // Procesar los datos de tareas para calcular numCheckboxes
+        // Process task data to calculate numCheckboxes
         for (let i = 1; i <= 3; i++) {
             const task = globalTasks.tasks[`task${i}`];
             for (let j = 1; j <= 3; j++) {
@@ -255,8 +255,8 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             }
         }
 
-        // Asegurarse de que la estructura completa de los detalles del clan, goblins, tareas y niveles exista y
-        // establecer valores predeterminados si faltan.
+        // Ensure the complete structure for clan details, goblins, tasks, and levels exists and
+        // set default values if they are missing.
 
         // Initialize system.details if not present or incomplete
         if (!systemData.details) {
@@ -290,7 +290,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                     health: { hp1: false, hp2: false }
                 };
             }
-            // Asegurarse de que la propiedad 'name' del goblin esté inicializada como una cadena
+            // Ensure the goblin's 'name' property is initialized as a string
             if (typeof systemData.goblins[goblinKey].name !== 'string') {
                 systemData.goblins[goblinKey].name = "";
             }
@@ -305,8 +305,8 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             systemData.dicePool.value = 0; // Default or reset if invalid
         }
 
-        data.system = systemData; // Asignamos los datos procesados a data.system
-        data.globalTasks = globalTasks; // Agregar datos de tareas globales
+        data.system = systemData; // Assign the processed data to data.system
+        data.globalTasks = globalTasks; // Add global task data
 
         console.log("getData() | Final processed data.system:", foundry.utils.deepClone(data.system));
         return data;
@@ -341,13 +341,13 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         // Listener for download image button
         html.find('.download-image').click(this._onDownloadImage.bind(this));
 
-        // Ocultar el botón de descarga si la imagen no es un dibujo (data:image/png)
+        // Hide the download button if the image is not a drawing (data:image/png)
         html.find('.goblin-image-container').each((i, el) => {
             const img = $(el).find('img');
             const btn = $(el).find('.download-image');
             const src = img.attr('src');
             
-            // Solo mostrar si es un dibujo generado por el sistema (PNG Data URL)
+            // Only show if it's a system-generated drawing (PNG Data URL)
             if (!src || !src.startsWith('data:image/png')) {
                 btn.hide();
             }
@@ -415,8 +415,8 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         const img = event.currentTarget;
         const card = $(img).closest('.goblin-card');
         
-        // Método más robusto: Usar el índice de la tarjeta en el DOM
-        // Asumimos que las tarjetas se renderizan en orden (goblin1, goblin2, etc.)
+        // More robust method: Use the card's index in the DOM
+        // We assume cards are rendered in order (goblin1, goblin2, etc.)
         const allCards = this.element.find('.goblin-card');
         const index = allCards.index(card);
         
@@ -424,11 +424,11 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             const goblinIndex = index + 1; // 1-based index
             const fieldPath = `system.goblins.goblin${goblinIndex}.img`;
             
-            // Lógica diferenciada: GM usa FilePicker
+            // Differentiated logic: GM uses FilePicker
             if (game.user.isGM) {
                 let currentImage = foundry.utils.getProperty(this.actor, fieldPath) || "icons/svg/mystery-man.svg";
 
-                // Si es data URL o muy larga, usar ruta válida por defecto para evitar errores
+                // If it's a data URL or very long, use a default valid path to avoid errors
                 if (currentImage.includes("data:") || currentImage.length > 256) {
                     currentImage = "icons/svg/mystery-man.svg";
                 }
@@ -445,9 +445,9 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                 return fp.render(true);
             }
 
-            // Jugadores: Elegir entre subir o dibujar
+            // Players: Choose between uploading or drawing
             const currentImage = foundry.utils.getProperty(this.actor, fieldPath);
-            // Solo permitir editar si es un dibujo generado por el sistema (PNG Data URL)
+            // Only allow editing if it is a system-generated drawing (PNG Data URL)
             const isDrawing = currentImage && currentImage.startsWith("data:image/png");
 
             const buttons = {
@@ -488,21 +488,26 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                 buttons: buttons,
                 default: "draw",
                 render: (html) => {
-                    // Estilizar botones para que coincidan con el sistema
+                    // Style buttons to match the system
                     const buttons = html.find('button');
+                    // Ensure all buttons have the same height and centered content
                     buttons.css({
                         'background': 'linear-gradient(180deg, #9CCC65 0%, #4CAF50 100%)',
                         'color': 'white',
                         'border': '1px solid #388E3C',
                         'font-family': "'Metamorphous', cursive",
-                        'box-shadow': '0 2px 5px rgba(0,0,0,0.3)'
+                        'box-shadow': '0 2px 5px rgba(0,0,0,0.3)',
+                        'display': 'flex',
+                        'align-items': 'center',
+                        'justify-content': 'center',
+                        'gap': '5px'
                     });
                     buttons.hover(
                         function() { $(this).css('background', 'linear-gradient(180deg, #4CAF50 0%, #9CCC65 100%)'); },
                         function() { $(this).css('background', 'linear-gradient(180deg, #9CCC65 0%, #4CAF50 100%)'); }
                     );
                     
-                    // Aplicar estilos del sistema manualmente para evitar conflictos de layout
+                    // Apply system styles manually to avoid layout conflicts
                     const dialog = html.closest('.window-app');
                     dialog.css({
                         'background': 'linear-gradient(135deg, #286C2D 0%, #1A4D1F 100%)',
@@ -528,13 +533,13 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             return;
         }
         
-        console.warn("Goblin Quest System | No se pudo determinar el campo de imagen para el goblin.");
+        console.warn("Goblin Quest System | Could not determine the image field for the goblin.");
     }
 
     /**
-     * Procesa la imagen subida para redimensionarla y comprimirla antes de guardar
-     * @param {File} file - El archivo de imagen
-     * @param {string} fieldPath - La ruta del campo a actualizar
+     * Processes the uploaded image to resize and compress it before saving
+     * @param {File} file - The image file
+     * @param {string} fieldPath - The path of the field to update
      * @private
      */
     _processAndSaveImage(file, fieldPath) {
@@ -542,12 +547,12 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         reader.onload = (ev) => {
             const img = new Image();
             img.onload = () => {
-                const maxWidth = 300; // Tamaño suficiente para avatar y chat
+                const maxWidth = 300; // Sufficient size for avatar and chat
                 const maxHeight = 300;
                 let width = img.width;
                 let height = img.height;
 
-                // Calcular nuevas dimensiones manteniendo aspecto
+                // Calculate new dimensions while maintaining aspect ratio
                 if (width > height) {
                     if (width > maxWidth) {
                         height *= maxWidth / width;
@@ -566,7 +571,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
                 
-                // Convertir a WebP con calidad 0.8 (mucho más ligero)
+                // Convert to WebP with 0.8 quality (much lighter)
                 const dataUrl = canvas.toDataURL('image/webp', 0.8);
                 this.actor.update({ [fieldPath]: dataUrl });
             };
@@ -576,9 +581,9 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     /**
-     * Abre un diálogo con canvas para dibujar el goblin sobre la silueta
-     * @param {string} fieldPath - El path del campo a actualizar
-     * @param {string|null} initialImage - Imagen inicial opcional para editar
+     * Opens a dialog with a canvas to draw the goblin over the silhouette
+     * @param {string} fieldPath - The path of the field to update
+     * @param {string|null} initialImage - Optional initial image for editing
      * @private
      */
     _openDrawingDialog(fieldPath, initialImage = null) {
@@ -618,7 +623,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                 }
             },
             render: (html) => {
-                // Estilizar ventana y botones principales para coincidir con el sistema
+                // Style window and main buttons to match the system
                 const dialog = html.closest('.window-app');
                 dialog.css({
                     'background': 'linear-gradient(135deg, #286C2D 0%, #1A4D1F 100%)',
@@ -636,7 +641,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                     'color': '#E0E0E0'
                 });
                 
-                // Estilizar botón de Guardar
+                // Style Save button
                 const saveButton = dialog.find('.dialog-button');
                 saveButton.css({
                     'background': 'linear-gradient(180deg, #9CCC65 0%, #4CAF50 100%)',
@@ -650,7 +655,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                     function() { $(this).css('background', 'linear-gradient(180deg, #9CCC65 0%, #4CAF50 100%)'); }
                 );
                 
-                // Asegurar contraste en botones de herramientas (que tienen fondo claro)
+                // Ensure contrast on tool buttons (which have a light background)
                 html.find('.btn-group button').css('color', '#333');
 
                 const canvas = html.find('#goblin-canvas')[0];
@@ -661,18 +666,18 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                 const btnEraser = html.find('#tool-eraser');
                 const preview = html.find('#cursor-preview');
                 
-                // Estado
+                // State
                 let isEraser = false;
                 let history = [];
                 const MAX_HISTORY = 20;
                 
-                // Cargar silueta base
+                // Load base silhouette
                 const img = new Image();
                 img.crossOrigin = "Anonymous";
                 img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 img.src = initialImage || "systems/goblin-quest-system/assets/silueta.webp";
                 
-                // Helper: Actualizar previsualización
+                // Helper: Update preview
                 const updatePreview = () => {
                     const size = sizeInput.val();
                     const color = isEraser ? '#ffffff' : colorInput.val();
@@ -684,17 +689,17 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                     });
                 };
 
-                // Listeners de UI para previsualización
+                // UI Listeners for preview
                 sizeInput.on('input', updatePreview);
                 colorInput.on('input', updatePreview);
 
-                // Helper: Guardar estado para Deshacer
+                // Helper: Save state for Undo
                 const saveState = () => {
                     history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
                     if (history.length > MAX_HISTORY) history.shift();
                 };
 
-                // Lógica de dibujo
+                // Drawing logic
                 let painting = false;
                 const getPos = (e) => {
                     const rect = canvas.getBoundingClientRect();
@@ -712,7 +717,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                     ctx.lineJoin = 'round';
                     
                     if (isEraser) {
-                        ctx.strokeStyle = "#ffffff"; // Borrador pinta blanco
+                        ctx.strokeStyle = "#ffffff"; // Eraser paints white
                     } else {
                         ctx.strokeStyle = colorInput.val();
                     }
@@ -724,7 +729,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                 };
 
                 canvas.addEventListener('mousedown', (e) => { 
-                    saveState(); // Guardar antes de pintar
+                    saveState(); // Save before painting
                     painting = true; 
                     ctx.beginPath();
                     const pos = getPos(e);
@@ -733,7 +738,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                 });
                 canvas.addEventListener('mouseup', () => { painting = false; ctx.beginPath(); });
                 
-                // Actualizar posición del cursor personalizado
+                // Update custom cursor position
                 canvas.addEventListener('mousemove', (e) => {
                     const rect = canvas.getBoundingClientRect();
                     const x = e.clientX - rect.left;
@@ -748,7 +753,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                     preview.css('display', 'none');
                 });
                 
-                // Botones de Herramientas
+                // Tool Buttons
                 btnBrush.click(() => {
                     isEraser = false;
                     btnBrush.css('background', '#ddd');
@@ -763,7 +768,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                     updatePreview();
                 });
 
-                // Botón Deshacer
+                // Undo Button
                 html.find('#action-undo').click(() => {
                     if (history.length > 0) {
                         ctx.putImageData(history.pop(), 0, 0);
@@ -787,7 +792,6 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
      * @private
      */
     _onDicePoolValueChange(event) {
-        event.preventDefault();
         const input = event.currentTarget;
         const value = parseInt(input.value, 10);
         
@@ -795,7 +799,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         if (value > 99) {
             input.value = 99;
         } else if (value < 0) {
-            // Si el valor es menor a 0, establecerlo a 0
+            // If the value is less than 0, set it to 0
             input.value = 0;
         }
     }
@@ -808,10 +812,10 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
      */
     _onGoblinHealthChange(event) {
         const checkbox = event.currentTarget;
-        // La actualización de los datos del actor ahora la maneja el proceso de submit del formulario de Foundry
-        // debido al atributo `name` completo del input.
+        // The actor data update is now handled by Foundry's form submission process
+        // due to the input's full `name` attribute.
         console.log(`_onGoblinHealthChange: Checkbox ${checkbox.name} changed to ${checkbox.checked}. Update handled by form submission.`);
-        // No se necesita this.actor.update aquí.
+        // No need for this.actor.update here.
     }
 
     /**
@@ -820,27 +824,27 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
      * @param {Event} event The click event.
      */
     async _onRollButtonClick(event) {
-        event.preventDefault(); // Evita el comportamiento predeterminado del botón (por ejemplo, recargar la página)
+        event.preventDefault(); // Prevents the button's default behavior (e.g., reloading the page)
 
         console.log("Botón 'Tirada' clickeado!");
 
-        // Obtener el valor del input de dados
+        // Get the value from the dice input
         const dicePoolInput = this.element.find('.dice-pool-input');
         let dicePoolValue = 0;
         
         if (dicePoolInput.length > 0) {
-            dicePoolValue = parseInt(dicePoolInput.val());
+            dicePoolValue = parseInt(dicePoolInput.val(), 10);
             if (isNaN(dicePoolValue) || dicePoolValue < 0) dicePoolValue = 0;
             if (dicePoolValue > 99) dicePoolValue = 99;
         } else {
             dicePoolValue = this.actor.system.dicePool.value || 0;
         }
 
-        // Obtener el modificador de la dificultad global desde las configuraciones
+        // Get the global difficulty modifier from settings
         const globalSettings = game.settings.get("goblin-quest-system", "globalTasks");
         let diceModifier = 0;
         
-        // Convertir dificultad a modificador
+        // Convert difficulty to modifier
         switch (globalSettings.difficulty) {
             case "easy":
                 diceModifier = 1;
@@ -857,33 +861,33 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         
         console.log(`Dificultad global: ${globalSettings.difficulty}, Modificador aplicado: ${diceModifier}`);
 
-        // Calcular la cantidad de dados a tirar: valor del input + 1
+        // Calculate the number of dice to roll: input value + 1
         const actualDiceToRoll = dicePoolValue + 1;
 
-        // La cadena de tirada usa d6, lo que significa que los resultados de cada dado individual estarán entre 1 y 6.
+        // The roll string uses d6, which means the results of each individual die will be between 1 and 6.
         let rollString = `${actualDiceToRoll}d6`;
 
         console.log(`Pool de dados a tirar (base): ${dicePoolValue}, Dados reales a tirar: ${actualDiceToRoll}, Modificador a aplicar a cada dado: ${diceModifier}, Cadena de tirada base: ${rollString}`);
 
-        // Crear una nueva tirada de Foundry y evaluarla asincrónicamente
+        // Create a new Foundry Roll and evaluate it asynchronously
         const roll = new Roll(rollString);
-        await roll.evaluate(); // Eliminado el {async: true} deprecado
+        await roll.evaluate(); // Removed deprecated {async: true}
 
-        // Obtener los resultados individuales de los dados sin modificar
+        // Get the individual raw die results
         const rawIndividualResults = roll.dice[0].results.map(r => r.result);
         console.log("Resultados de dados individuales (sin modificar):", rawIndividualResults);
 
-        // Aplicar el modificador a cada resultado sin restricciones (permite -1 y 7)
+        // Apply the modifier to each result without restrictions (allows -1 and 7)
         const displayedResults = rawIndividualResults.map(result => {
             const modifiedResult = result + diceModifier;
-            // No restringir el resultado - permite -1, 0, 7, etc.
+            // Do not clamp the result - allows -1, 0, 7, etc.
             return modifiedResult;
         });
         console.log("Resultados de dados individuales (con modificador aplicado y ajustado):", displayedResults);
 
-        // --- NUEVA LÓGICA PARA EL MENSAJE DE CHAT ---
+        // --- NEW LOGIC FOR CHAT MESSAGE ---
 
-        // 1. Determinar el goblin activo (el primero que no esté muerto)
+        // 1. Determine the active goblin (the first one that is not dead)
         let activeGoblinImg = "icons/svg/mystery-man.svg";
         let activeGoblinName = this.actor.name;
 
@@ -894,7 +898,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
                     activeGoblinImg = goblin.img || "icons/svg/mystery-man.svg";
                     activeGoblinName = goblin.name || "Goblin";
 
-                    // Si no tiene ambas casillas de salud marcadas, es el activo
+                    // If it doesn't have both health boxes checked, it's the active one
                     if (!goblin.health.hp1 || !goblin.health.hp2) {
                         break;
                     }
@@ -902,43 +906,43 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             }
         }
 
-        // Truncar el nombre para evitar que rompa el diseño (8 letras + ...)
+        // Truncate the name to prevent it from breaking the layout (8 letters + ...)
         if (activeGoblinName.length > 8) {
             activeGoblinName = activeGoblinName.substring(0, 8) + "...";
         }
 
-        // 2. Contar éxitos y heridas con reglas especiales
+        // 2. Count successes and wounds with special rules
         let successes = 0;
         let wounds = 0;
         
         displayedResults.forEach(r => {
             if (r === 7) {
-                successes += 2; // 7 cuenta como 2 éxitos
+                successes += 2; // 7 counts as 2 successes
             } else if (r >= 5) {
                 successes += 1; // 5-6 normal success
             }
             
             if (r === 0) {
-                wounds += 2; // 0 cuenta como 2 heridas
+                wounds += 2; // 0 counts as 2 wounds
             } else if (r <= 2 && r >= 1) {
                 wounds += 1; // 1, 2 normal wounds
             }
         });
 
-        // 3. Crear números en cajitas que simulan dados
+        // 3. Create numbers in little boxes that simulate dice
         const diceBoxesHtml = displayedResults.map(result => {
             let displayValue = result;
             let cssClass = 'dice-box';
             
-            // Colores especiales para resultados extraordinarios
+            // Special colors for extraordinary results
             if (result === 7) {
-                cssClass += ' dice-seven'; // Dorado para éxito doble
+                cssClass += ' dice-seven'; // Gold for double success
             } else if (result === 0) {
-                cssClass += ' dice-zero'; // Rojo para herida doble
+                cssClass += ' dice-zero'; // Red for double wound
             } else if (result >= 5) {
-                cssClass += ' dice-success'; // Verde para éxitos
+                cssClass += ' dice-success'; // Green for successes
             } else if (result <= 2 && result >= 1) {
-                cssClass += ' dice-wound'; // Rojo para heridas
+                cssClass += ' dice-wound'; // Red for wounds
             }
             
             return `<div class="${cssClass}">${displayValue}</div>`;
@@ -946,16 +950,16 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
 
         const resultsHtml = `<div class="dice-results-container">${diceBoxesHtml}</div>`;
 
-        // 4. Construir los mensajes de éxito y heridas
-        // Estilos inline para asegurar mismo tamaño y disposición
+        // 4. Build the success and wound messages
+        // Inline styles to ensure same size and layout
         const boxStyle = "flex: 1; display: flex; align-items: center; justify-content: center; height: 40px; margin: 0; box-sizing: border-box;";
         const successesMessage = `<div class="roll-summary success" style="${boxStyle}">Éxitos: ${successes}</div>`;
         const woundsMessage = `<div class="roll-summary wound" style="${boxStyle}">Heridas: ${wounds}</div>`;
 
-        // Formatear el modificador para mostrar +1 si es positivo
+        // Format the modifier to show +1 if positive
         const formattedModifier = diceModifier > 0 ? `+${diceModifier}` : diceModifier;
 
-        // Crear el texto descriptivo para el mensaje de chat
+        // Create the descriptive text for the chat message
         const flavorText = `
             <div class="goblin-roll" style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
                 <img src="${activeGoblinImg}" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #333; object-fit: cover; box-shadow: 0 2px 5px rgba(0,0,0,0.3); margin-bottom: 5px;" title="Goblin Activo" />
@@ -970,13 +974,13 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             </div>
         `;
 
-        // Enviar el mensaje de tirada al chat de Foundry
+        // Send the roll message to the Foundry chat
         roll.toMessage({
             speaker: ChatMessage.implementation.getSpeaker({ actor: this.actor }),
             flavor: flavorText
         });
 
-        // Contar el número de 3s y 4s en los resultados modificados
+        // Count the number of 3s and 4s in the modified results
         let countThrees = 0;
         let countFours = 0;
         for (const result of displayedResults) {
@@ -987,7 +991,7 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             }
         }
 
-        // Determinar el modificador y la dificultad para la siguiente tirada
+        // Determine the modifier and difficulty for the next roll
         let nextModifier = 0;
         let nextDifficulty = 'normal';
         if (countThrees > countFours) {
@@ -1003,15 +1007,15 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
 
         console.log(`Dificultad para la siguiente tirada: ${nextDifficulty} (${nextModifier})`);
 
-        // Actualizar la dificultad en las configuraciones globales via socket
+        // Update the difficulty in global settings via socket
         if (game.user.isGM) {
-            // Si es GM, actualizar directamente
+            // If GM, update directly
             const settings = game.settings.get("goblin-quest-system", "globalTasks");
             const newSettings = foundry.utils.deepClone(settings);
             newSettings.difficulty = nextDifficulty;
             await game.settings.set("goblin-quest-system", "globalTasks", newSettings);
         } else {
-            // Si es jugador, enviar via socket al GM
+            // If player, send via socket to GM
             game.socket.emit("system.goblin-quest-system", {
                 type: "updateDifficulty",
                 difficulty: nextDifficulty,
@@ -1019,12 +1023,12 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             });
         }
 
-        // Resetear el valor del input a 0 después de la tirada
+        // Reset the input value to 0 after the roll
         if (dicePoolInput.length > 0) {
             dicePoolInput.val(0);
         }
 
-        // Actualizar el valor de dicePool a 0 en el actor
+        // Update the dicePool value to 0 in the actor
         await this.actor.update({ "system.dicePool.value": 0 });
         console.log("Input de dados reseteado y dicePool.value establecido en 0.");
     }
