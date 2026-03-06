@@ -325,11 +325,11 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
 
         // Initialize dicePool if not present or incomplete
         if (!systemData.dicePool) {
-            systemData.dicePool = { value: 0 };
+            systemData.dicePool = { value: 1 };
         }
-        // Ensure dicePool.value is a number and within bounds
-        if (typeof systemData.dicePool.value !== 'number' || systemData.dicePool.value < 0) {
-            systemData.dicePool.value = 0; // Default or reset if invalid
+        // Ensure dicePool.value is a number and at least 1
+        if (typeof systemData.dicePool.value !== 'number' || systemData.dicePool.value < 1) {
+            systemData.dicePool.value = 1; // Default or reset if invalid
         }
 
         data.system = systemData; // Assign the processed data to data.system
@@ -825,9 +825,9 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         // If the entered value is greater than 99, automatically set it to 99.
         if (value > 99) {
             input.value = 99;
-        } else if (value < 0) {
-            // If the value is less than 0, set it to 0
-            input.value = 0;
+        } else if (value < 1) {
+            // If the value is less than 1, set it to 1
+            input.value = 1;
         }
     }
 
@@ -861,10 +861,10 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         
         if (dicePoolInput.length > 0) {
             dicePoolValue = parseInt(dicePoolInput.val(), 10);
-            if (isNaN(dicePoolValue) || dicePoolValue < 0) dicePoolValue = 0;
+            if (isNaN(dicePoolValue) || dicePoolValue < 1) dicePoolValue = 1;
             if (dicePoolValue > 99) dicePoolValue = 99;
         } else {
-            dicePoolValue = this.actor.system.dicePool.value || 0;
+            dicePoolValue = this.actor.system.dicePool.value || 1;
         }
 
         // Get the global difficulty modifier from settings
@@ -888,13 +888,13 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
         
         console.log(`Dificultad global: ${globalSettings.difficulty}, Modificador aplicado: ${diceModifier}`);
 
-        // Calculate the number of dice to roll: input value + 1
-        const actualDiceToRoll = dicePoolValue + 1;
+        // El número de dados a tirar es el valor del input.
+        const actualDiceToRoll = dicePoolValue;
 
         // The roll string uses d6, which means the results of each individual die will be between 1 and 6.
         let rollString = `${actualDiceToRoll}d6`;
 
-        console.log(`Pool de dados a tirar (base): ${dicePoolValue}, Dados reales a tirar: ${actualDiceToRoll}, Modificador a aplicar a cada dado: ${diceModifier}, Cadena de tirada base: ${rollString}`);
+        console.log(`Dados a tirar: ${actualDiceToRoll}, Modificador a aplicar a cada dado: ${diceModifier}, Cadena de tirada: ${rollString}`);
 
         // Create a new Foundry Roll and evaluate it asynchronously
         const roll = new Roll(rollString);
@@ -1050,14 +1050,14 @@ export class GoblinQuestActorSheet extends foundry.appv1.sheets.ActorSheet {
             });
         }
 
-        // Reset the input value to 0 after the roll
+        // Reset the input value to 1 after the roll
         if (dicePoolInput.length > 0) {
-            dicePoolInput.val(0);
+            dicePoolInput.val(1);
         }
 
-        // Update the dicePool value to 0 in the actor
-        await this.actor.update({ "system.dicePool.value": 0 });
-        console.log("Input de dados reseteado y dicePool.value establecido en 0.");
+        // Update the dicePool value to 1 in the actor
+        await this.actor.update({ "system.dicePool.value": 1 });
+        console.log("Input de dados reseteado y dicePool.value establecido en 1.");
     }
 
     /**
