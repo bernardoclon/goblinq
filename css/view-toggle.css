@@ -532,3 +532,60 @@
 .objective-sectionp {
     width: 95% !important;
 }
+
+/* =================================================================
+   DICE POOL CONTROLS
+   ================================================================= */
+
+.dice-input-controls {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.goblin-quest-sheet .dice-input-controls .dice-pool-change {
+    width: 24px;
+    height: 24px;
+    background: none !important;
+    border: none !important;
+    color: #FFFFFF;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.goblin-quest-sheet .dice-input-controls .dice-pool-change:hover {
+    background: none !important;
+    box-shadow: none;
+    transform: scale(1.05);
+}
+
+.goblin-quest-sheet .dice-input-controls .dice-pool-change:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.goblin-quest-sheet .dice-input-controls .dice-pool-change i {
+    color: white;
+    margin: 0;
+}
+
+.chat-message.message {
+    background: #1A4D1F !important;
+    color: #FFFFFF !important;
+    border: none !important; /* Elimina el borde forzado por Foundry */
+    box-shadow: 0 0 0 1px #000000 !important; /* Simula el borde negro */
+}
+
+.chat-message.message .message-header .message-sender,
+.chat-message.message .message-header .message-metadata .message-timestamp,
+.chat-message.message .message-header .message-metadata .message-delete {
+    color: #FFFFFF !important;
+}

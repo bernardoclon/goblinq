@@ -160,27 +160,27 @@ export class GMPanel extends Application {
         const settings = game.settings.get("goblin-quest-system", "globalTasks");
         const newSettings = foundry.utils.deepClone(settings);
         
-        // Manejar checkboxes de estados de tareas con índices específicos
+        // Handle task state checkboxes with specific indices
         if (input.name.includes("checkboxStates.")) {
             const pathParts = input.name.split(".");
             const checkboxIndex = parseInt(pathParts[pathParts.length - 1]);
             const basePath = pathParts.slice(0, -1).join(".");
             
-            // Obtener o crear el array de checkboxStates
+            // Get or create the checkboxStates array
             let checkboxStates = foundry.utils.getProperty(newSettings, basePath);
             if (!Array.isArray(checkboxStates)) {
                 checkboxStates = [];
             }
             
-            // Actualizar el estado específico del checkbox
+            // Update the specific checkbox state
             checkboxStates[checkboxIndex] = value;
             
-            // Establecer el array actualizado de vuelta
+            // Set the updated array back
             foundry.utils.setProperty(newSettings, basePath, checkboxStates);
             
             console.log(`Updated ${input.name} to ${value}`);
         } else {
-            // Manejar otros inputs normalmente
+            // Handle other inputs normally
             foundry.utils.setProperty(newSettings, input.name, value);
         }
         
@@ -209,7 +209,7 @@ export class GMPanel extends Application {
             await game.settings.set("goblin-quest-system", "globalTasks", newSettings);
             
             console.log("Difficulty updated to:", input.value);
-            // Renderizar el panel para reflejar el cambio de dificultad
+            // Render the panel to reflect the difficulty change
             this.render();
             
         } catch (error) {
@@ -224,7 +224,7 @@ export class GMPanel extends Application {
      */
     async close(options = {}) {
         const result = await super.close(options);
-        // Limpiar la instancia singleton cuando se cierra
+        // Clean up the singleton instance when closed
         if (GMPanel.#instance === this) {
             GMPanel.#instance = null;
             console.log("GM Panel | Instance cleared");

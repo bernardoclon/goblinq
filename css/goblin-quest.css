@@ -1,7 +1,15 @@
+/* =================================================================
+   IMPORTS & CORE SETUP
+   ================================================================= */
+
 *, *::before, *::after {
     box-sizing: border-box;
 }
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Inter:wght@400;700&family=Luckiest+Guy&family=Metamorphous&display=swap');
+
+/* =================================================================
+   MAIN ACTOR SHEET STYLES
+   ================================================================= */
 
 .goblin-quest-sheet {
     font-family: 'Metamorphous', cursive;    
@@ -20,7 +28,10 @@
     height: 100%;
 }
 
-/* GM Panel Content */
+/* =================================================================
+   GM PANEL & TASK SECTIONS
+   ================================================================= */
+
 .gm-panel {
     font-family: 'Metamorphous', cursive;
 }
@@ -73,6 +84,10 @@
     align-content: center;
     justify-content: center;
 }
+/* =================================================================
+   FORM ELEMENTS & INPUTS
+   ================================================================= */
+
 .goblin-quest-sheet input[type="text"],
 .goblin-quest-sheet input[type="number"],
 .goblin-quest-sheet textarea,
@@ -95,6 +110,10 @@
     padding-left: 6px;
     text-align: left;
 }
+/* =================================================================
+   CLAN INFO & HEADER
+   ================================================================= */
+
 .goblin-quest-sheet .clan-info-top {
     background: #1A4D1F;
     border-bottom: 2px solid #3AA044;
@@ -162,6 +181,10 @@
     color: #FFF;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
 }
+/* =================================================================
+   CHECKBOXES (HEALTH, TASKS)
+   ================================================================= */
+
 .goblin-quest-sheet .checkbox-group {
     display: flex;
     gap: 2px;
@@ -200,6 +223,10 @@
     background-image: url('../assets/goblin-negro.png');
     padding: 15px;
 }
+/* =================================================================
+   DICE POOL & ROLL BUTTON
+   ================================================================= */
+
 .goblin-quest-sheet .dice-pool {
     flex-grow: 1;
     display: flex;
@@ -218,6 +245,10 @@
     line-height: 30px;
     padding: 0 5px;
 }
+/* =================================================================
+   TABS
+   ================================================================= */
+
 .goblin-quest-sheet .goblin-tabs {
     padding: 6px 8px;
     border-bottom: 2px solid #3AA044;
@@ -242,6 +273,10 @@
     background: #4CAF50;
     box-shadow: 0 -2px 6px rgba(0,0,0,0.2);
 }
+/* =================================================================
+   GOBLIN CARDS & DETAILS
+   ================================================================= */
+
 .goblin-quest-sheet .goblin-details-section {
     padding: 10px 15px;
     background: #4CAF50;
@@ -508,7 +543,7 @@
     width: 100%;
     margin-top: 5px;
     display: grid;
-    grid-template-columns: 120px 1fr;
+    grid-template-columns: auto 1fr;
     align-items: center;
     gap: 10px;
 }
@@ -536,7 +571,10 @@
     flex: 1;
 }
 
-/* Estilos para los resultados de dados en el chat */
+/* =================================================================
+   CHAT MESSAGE & DICE RESULTS
+   ================================================================= */
+
 .dice-results-container {
     display: flex;
     flex-wrap: wrap;
@@ -547,7 +585,6 @@
     margin-bottom: 10px;
 }
 
-/* Dice Box Styles - Numbers in dice-like boxes */
 .dice-results-container {
     display: flex;
     gap: 8px;
@@ -581,7 +618,6 @@
     transform: scale(1.05);
 }
 
-/* Special dice results */
 .dice-box.dice-success {
     background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
     color: white;
@@ -627,20 +663,19 @@
 }
 
 .roll-summary.success {
-    color: #006400; /* Verde oscuro */
+    color: #006400;
     background-color: #e8f5e9;
     border: 1px solid #a5d6a7;
     font-size: 0.8em;
 }
 
 .roll-summary.wound {
-    color: #b71c1c; /* Rojo oscuro */
+    color: #b71c1c;
     background-color: #ffebee;
     border: 1px solid #ef9a9a;
     font-size: 0.8em;
 }
 
-/* Estilos para los mensajes de tirada en el chat */
 .chat-message .message-header .goblin-roll{
     display: flex;
     flex-direction: column;
@@ -663,10 +698,10 @@
     font-weight: bold;
 }
 
+/* =================================================================
+   GM TASK PANEL BUTTON & STYLES
+   ================================================================= */
 
-
-
-/* GM Task Panel Button */
 .gm-task-panel-btn {
     background: linear-gradient(180deg, #9CCC65 0%, #4CAF50 100%);
     color: white;
@@ -685,7 +720,6 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
-/* GM Panel Content */
 .gm-panel .tasks-section {
     padding: 5px;
     display: flex;
@@ -833,7 +867,6 @@
     margin: 0;
 }
 
-/* Difficulty Section Styles */
 .gm-panel .difficulty-section {
     background: rgba(26, 77, 31, 0.9);
     border: 1px solid #4CAF50;
@@ -1041,4 +1074,198 @@
 
 .goblin-quest-sheet .objective-sectionp {
     width: 100% !important; 
+}
+
+/* =================================================================
+   DIALOG STYLES
+   ================================================================= */
+
+.dialog .dialog-buttons {
+    gap: 5px;
+    align-items: center;
+}
+
+.dialog .dialog-buttons button {
+    background: linear-gradient(180deg, #9CCC65 0%, #4CAF50 100%);
+    color: white;
+    border: 1px solid #388E3C;
+    font-family: 'Metamorphous', cursive;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    height: 38px;
+    min-height: 38px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 12px;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.dialog .dialog-buttons button:hover {
+    background: linear-gradient(180deg, #4CAF50 0%, #9CCC65 100%);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+}
+
+/* =================================================================
+   NEW CHAT MESSAGE STYLES
+   ================================================================= */
+
+.goblin-chat-message {
+    background: linear-gradient(135deg, #286C2D 0%, #1A4D1F 100%);
+    border: 2px solid #3AA044;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    font-family: 'Metamorphous', cursive;
+    color: #E0E0E0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.goblin-chat-message .goblin-header {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #3AA044;
+}
+
+.goblin-chat-message .goblin-portrait {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #3AA044;
+    object-fit: cover;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    flex-shrink: 0;
+}
+
+.goblin-chat-message .goblin-title {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.goblin-chat-message .goblin-name {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #FFFDE7;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.goblin-chat-message .action-text {
+    font-size: 0.8em;
+    color: #C5E1A5;
+}
+
+.goblin-chat-message .dice-container {
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    height: 140px; /* Altura fija para mantener el tamaño del mensaje */
+    overflow: hidden; /* Ocultar desbordamiento, el JS ajustará el tamaño */
+    align-content: center;
+}
+
+.goblin-chat-message .dice-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    color: #333;
+    font-weight: bold;
+    font-family: 'Chakra Petch', sans-serif;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    /* Size is set inline via JS */
+}
+
+.goblin-chat-message .dice-box.dice-success {
+    background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+    color: white;
+    border-color: #2E7D32;
+}
+
+.goblin-chat-message .dice-box.dice-wound {
+    background: linear-gradient(135deg, #F44336 0%, #D32F2F 100%);
+    color: white;
+    border-color: #C62828;
+}
+
+.goblin-chat-message .dice-box.dice-seven {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
+    color: #333;
+    border-color: #FF8F00;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+.goblin-chat-message .dice-box.dice-zero {
+    background: linear-gradient(135deg, #B71C1C 0%, #8B0000 100%);
+    color: white;
+    border-color: #6D0000;
+    box-shadow: 0 0 8px rgba(183, 28, 28, 0.6);
+}
+
+.goblin-chat-message .roll-summary-container {
+    display: flex;
+    border-top: 1px solid #3AA044;
+}
+
+.goblin-chat-message .summary-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.goblin-chat-message .summary-box.success {
+    border-right: 1px solid #3AA044;
+    background: rgba(76, 175, 80, 0.1);
+}
+
+.goblin-chat-message .summary-box.wound {
+    background: rgba(244, 67, 54, 0.1);
+}
+
+.goblin-chat-message .summary-box .label {
+    font-size: 0.7em;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+.goblin-chat-message .summary-box .value {
+    font-size: 1.4em;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.goblin-chat-message .summary-box.success .value {
+    color: #A5D6A7;
+}
+
+.goblin-chat-message .summary-box.wound .value {
+    color: #EF9A9A;
+}
+
+/* Remove default padding from the message content to let the card fill the space */
+.chat-message .message-content:has(.goblin-chat-message) {
+    padding: 0;
 }
