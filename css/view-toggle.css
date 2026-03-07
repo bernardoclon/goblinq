@@ -532,3 +532,55 @@
 .objective-sectionp {
     width: 95% !important;
 }
+
+/* =================================================================
+   DICE POOL CONTROLS
+   ================================================================= */
+
+.dice-input-controls {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.goblin-quest-sheet .dice-input-controls .dice-pool-change {
+    width: 24px;
+    height: 24px;
+    /*background: linear-gradient(135deg, #286C2D 0%, #1A4D1F 100%);*/
+    background: none !important;
+    color: #FFFFFF;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.goblin-quest-sheet .dice-input-controls .dice-pool-change:hover {
+    background: none !important;
+    box-shadow: none;
+    transform: scale(1.05);
+}
+
+.goblin-quest-sheet .dice-input-controls .dice-pool-change:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.goblin-quest-sheet .dice-input-controls .dice-pool-change i {
+    color: white;
+    margin: 0;
+}
+
+/*.goblin-quest-sheet .dice-input-controls .dice-pool-input {
+    width: 80px !important;
+    height: 30px;
+    text-align: center;
+    padding: 0;
+    -moz-appearance: textfield;
+}*/
