@@ -1,0 +1,83 @@
+{
+  "goblin-quest": {
+    "Actor": {
+      "Type": {
+        "clan": "Clan"
+      },
+      "Templates": {
+        "base": {
+          "description": "Description"
+        }
+      },
+      "clan": {
+        "details": {
+          "clanName": "Clan Name",
+          "dream": "Dream",
+          "rarity": "Quirk",
+          "expertise": "Honorific",
+          "relicName": "Relic Name"
+        },
+        "goblins": {
+          "title": "Goblins",
+          "goblin1": {
+            "name": "Goblin 1"
+          },
+          "goblin2": {
+            "name": "Goblin 2"
+          },
+          "goblin3": {
+            "name": "Goblin 3"
+          },
+          "goblin4": {
+            "name": "Goblin 4"
+          },
+          "goblin5": {
+            "name": "Goblin 5"
+          },
+          "health": {
+            "hp1": "Wound 1",
+            "hp2": "Wound 2"
+          }
+        },
+        "dicePool": {
+          "title": "Dice Pool",
+          "value": "Current Value",
+          "max": "Max Value"
+        },
+        "diceModifier": "Dice Modifier",
+        "objective": "Objective",
+        "tasks": {
+          "title": "Tasks",
+          "task1": {
+            "name": "Task 1"
+          },
+          "task2": {
+            "name": "Task 2"
+          },
+          "task3": {
+            "name": "Task 3"
+          },
+          "levels": {
+            "level1": "Level 1",
+            "level2": "Level 2",
+            "level3": "Level 3"
+          },
+          "challenge": "Challenge"
+        }
+      }
+    },
+    "Item": {
+      "Type": {
+        "basic": "Basic Item"
+      },
+      "Templates": {
+        "base": {
+          "description": "Description"
+        }
+      },
+      "basic": {
+        "value": "Value"
+      }
+    }
+  }
+}

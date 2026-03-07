@@ -1,0 +1,77 @@
+{
+  "Actor": {
+    "types": ["clan"],
+    "templates": {
+      "base": {
+        "description": ""
+      }
+    },
+    "clan": {
+      "templates": ["base"],
+      "details": {
+        "clanName": "",
+        "dream": "",
+        "rarity": "",
+        "expertise": "",
+        "relicName": ""
+      },
+      "goblins": {
+        "goblin1": {
+          "name": "",
+          "img": "icons/svg/mystery-man.svg",
+          "health": {
+            "hp1": false,
+            "hp2": false
+          },
+          "feature": "",
+          "causeOfDeath": ""
+        },
+        "goblin2": {
+          "name": "",
+          "img": "icons/svg/mystery-man.svg",
+          "health": {
+            "hp1": false,
+            "hp2": false
+          },
+          "feature": "",
+          "causeOfDeath": ""
+        },
+        "goblin3": {
+          "name": "",
+          "img": "icons/svg/mystery-man.svg",
+          "health": {
+            "hp1": false,
+            "hp2": false
+          },
+          "feature": "",
+          "causeOfDeath": ""
+        },
+        "goblin4": {
+          "name": "",
+          "img": "icons/svg/mystery-man.svg",
+          "health": {
+            "hp1": false,
+            "hp2": false
+          },
+          "feature": "",
+          "causeOfDeath": ""
+        },
+        "goblin5": {
+          "name": "",
+          "img": "icons/svg/mystery-man.svg",
+          "health": {
+            "hp1": false,
+            "hp2": false
+          },
+          "feature": "",
+          "causeOfDeath": ""
+        }
+      },
+      "dicePool": {
+        "value": 0,
+        "max": 10
+      },
+      "diceModifier": 0
+    }
+  }
+}

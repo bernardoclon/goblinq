@@ -1,0 +1,84 @@
+{
+  "goblin-quest": {
+    "Actor": {
+      "Type": {
+        "clan": "Clan"
+      },
+      "Templates": {
+        "base": {
+          "description": "Descripción"
+        }
+      },
+      "clan": {
+        "details": {
+          "clanName": "Nombre del Clan",
+          "dream": "Sueño",
+          "rarity": "Rareza",
+          "expertise": "Habilidad",
+          "relicName": "Nombre de la Reliquia"
+        },
+        "goblins": {
+          "title": "Goblins",
+          "goblin1": {
+            "name": "Goblin 1"
+          },
+          "goblin2": {
+            "name": "Goblin 2"
+          },
+          "goblin3": {
+            "name": "Goblin 3"
+          },
+          "goblin4": {
+            "name": "Goblin 4"
+          },
+          "goblin5": {
+            "name": "Goblin 5"
+          },
+          "health": {
+            "hp1": "Herida 1",
+            "hp2": "Herida 2"
+          }
+        },
+        "dicePool": {
+          "title": "Reserva de Dados",
+          "value": "Valor Actual",
+          "max": "Valor Máximo"
+        },
+        "diceModifier": "Modificador de Dados",
+        "objective": "Objetivo",
+        "tasks": {
+          "title": "Tareas",
+          "task1": {
+            "name": "Tarea 1"
+          },
+          "task2": {
+            "name": "Tarea 2"
+          },
+          "task3": {
+            "name": "Tarea 3"
+          },
+          "levels": {
+            "level1": "Nivel 1",
+            "level2": "Nivel 2",
+            "level3": "Nivel 3"
+          },
+          "challenge": "Dificultad"
+        }
+      }
+    },
+    "Item": {
+      "Type": {
+        "basic": "Objeto Básico"
+      },
+      "Templates": {
+        "base": {
+          "description": "Descripción"
+        }
+      },
+      "basic": {
+        "value": "Valor"
+      }
+    }
+  }
+}
+
