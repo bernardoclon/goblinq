@@ -1,36 +1,39 @@
 // module/goblin-quest-system.js
-// Import the custom actor sheet class.
-// Foundry VTT classes like ActorSheet, loadTemplates, and Actors are global or accessed via 'foundry.'
-// They do not require an import declaration with module paths like "foundry.appv1.sheets.ActorSheet".
+// Importa la clase de la hoja de actor personalizada.
+// Las clases de Foundry VTT como ActorSheet, loadTemplates, y Actors son globales o se acceden vía 'foundry.'
+// No requieren una declaración de importación con rutas de módulo como "foundry.appv1.sheets.ActorSheet".
 import { GoblinQuestActorSheet } from "./sheets/goblin-quest-actor-sheet.js";
 import { GMPanel } from "./gm-panel.js";
 
-// Define a system ID, used for settings.
+// Define un ID para el sistema, utilizado para configuraciones.
 const SYSTEM_ID = "goblin-quest-system";
 
-// Map to store active retry intervals for compendium banners.
+// Mapa para almacenar los intervalos de reintentos activos para los banners de compendio.
 const bannersBeingApplied = new Set();
 
 
-// 'init' hook runs when Foundry VTT is initializing the system.
+// Hook 'init' se ejecuta cuando Foundry VTT está inicializando el sistema.
 Hooks.once("init", async function() {
     console.log("Goblin Quest System | Inicializando el sistema...");
 
-    // Load the system's HTML templates.
-    // Access 'loadTemplates' directly from the 'foundry.applications.handlebars' namespace
+    // Cargar las plantillas HTML del sistema.
+    // Acceder a 'loadTemplates' directamente desde el namespace 'foundry.applications.handlebars'
     await foundry.applications.handlebars.loadTemplates([
         "systems/goblin-quest-system/templates/actor-sheet.html",
         "systems/goblin-quest-system/templates/gm-panel.html"
+        // Si tuvieras hojas de items o de otro tipo, las agregarías aquí.
+        // Ejemplo: "systems/goblin-quest-system/templates/item-sheet.html"
     ]);
 
-    // Register the custom character sheets.
-    // Access 'Actors' and 'ActorSheet' from their global namespaces.
+    // Registrar las hojas de personaje personalizadas.
+    // Acceder a 'Actors' y 'ActorSheet' desde sus namespaces globales.
     foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
 
+    // Luego, registramos nuestra hoja personalizada.
     foundry.documents.collections.Actors.registerSheet("goblin-quest-system", GoblinQuestActorSheet, {
-        types: ["clan"], // Specifies which actor types will use this sheet (defined in template.json).
-        makeDefault: true, // Sets this sheet as the default for the 'clan' type.
-        label: "Goblin Clan Sheet" // Label that will appear in the sheet selector.
+        types: ["clan"], // Especifica qué tipos de actores usarán esta hoja (definido en template.json).
+        makeDefault: true, // Establece esta hoja como la predeterminada para el tipo 'clan'.
+        label: "Hoja de Clan Goblin" // Etiqueta que aparecerá en el selector de hojas.
     });
 
     game.settings.register("goblin-quest-system", "globalTasks", {
@@ -70,9 +73,9 @@ Hooks.once("init", async function() {
         }
     });
 
-    // Register the 'range' helper for Handlebars.
-    // Used to iterate over a range of numbers in the template (e.g., to generate dice checkboxes).
-    // It will generate numbers from 'from' to 'to - 1' inclusive.
+    // Registra el helper 'range' para Handlebars.
+    // Usado para iterar sobre un rango de números en el template (ej. para generar checkboxes de dados).
+    // Generará números desde 'from' hasta 'to - 1' inclusive.
     Handlebars.registerHelper('range', function(from, to) {
         const result = [];
         for (let i = from; i < to; i++) {
@@ -81,37 +84,37 @@ Hooks.once("init", async function() {
         return result;
     });
 
-    // Register the 'add' helper for Handlebars.
-    // Used to add numbers directly in the template.
+    // Registra el helper 'add' para Handlebars.
+    // Usado para sumar números directamente en el template.
     Handlebars.registerHelper('add', function(a, b) {
         return a + b;
     });
 
-    // Register the 'lt' (less than) helper for Handlebars.
-    // Used to compare values in the template (e.g., to determine if a checkbox should be checked).
+    // Registra el helper 'lt' (less than) para Handlebars.
+    // Usado para comparar valores en el template (ej. para determinar si un checkbox debe estar marcado).
     Handlebars.registerHelper('lt', function(a, b) {
         return a < b;
     });
 
-    // Register the 'eq' (equals) helper for Handlebars.
-    // Used to compare values in the template (e.g., to select options in a dropdown).
+    // Registra el helper 'eq' (equals) para Handlebars.
+    // Usado para comparar valores en el template (ej. para seleccionar opciones en un dropdown).
     Handlebars.registerHelper('eq', function(a, b) {
         return a === b;
     });
 
-    // Register the 'isGreaterThan' helper for Handlebars.
-    // Used to compare if one number is greater than another.
+    // Registra el helper 'isGreaterThan' para Handlebars.
+    // Usado para comparar si un número es mayor que otro.
     Handlebars.registerHelper('isGreaterThan', function(a, b) {
         return a > b;
     });
 
 });
 
-// 'ready' hook to configure sockets after the game is ready
+// Hook 'ready' para configurar sockets después de que el juego esté listo
 Hooks.once("ready", function() {
-    // Configure socket for communication between players and GM
+    // Configurar socket para comunicación entre jugadores y GM
     game.socket.on("system.goblin-quest-system", async (data) => {
-        // Only the GM can update global settings
+        // Solo el GM puede actualizar settings globales
         if (!game.user.isGM) return;
         
         console.log("Goblin Quest System | Socket recibido:", data);
@@ -132,17 +135,17 @@ Hooks.once("ready", function() {
     });
 });
 
-// 'setup' hook runs after 'init' and before game data is loaded.
-// It's a good place to configure custom data models.
+// Hook 'setup' se ejecuta después de 'init' y antes de que se carguen los datos del juego.
+// Es un buen lugar para configurar los modelos de datos personalizados.
 Hooks.once("setup", function() {
     console.log("Goblin Quest System | Configurando modelos de datos...");
 
-    // Import 'fields' to define the data model schema in Foundry VTT 13+.
+    // Importar 'fields' para definir el esquema de los modelos de datos en Foundry VTT 13+.
     const { fields } = foundry.data;
 
     /**
-     * Defines the data model for the 'clan' Actor.
-     * In Foundry VTT 13+, data models are classes that extend DataModel.
+     * Define el modelo de datos para el Actor 'clan'.
+     * En Foundry VTT 13+, los modelos de datos son clases que extienden DataModel.
      */
     class ClanDataModel extends foundry.abstract.TypeDataModel {
         static defineSchema() {
@@ -154,7 +157,7 @@ Hooks.once("setup", function() {
                     expertise: new fields.StringField({ required: true, initial: "" }),
                     relicName: new fields.StringField({ required: true, initial: "" })
                 }),
-                // MAIN FIX: Ensure each goblin is a complete SchemaField
+                // CORRECCIÓN PRINCIPAL: Asegurar que cada goblin es un SchemaField completo
                 goblins: new fields.SchemaField({
                     goblin1: new fields.SchemaField({
                         name: new fields.StringField({ required: true, initial: "" }),
@@ -208,18 +211,18 @@ Hooks.once("setup", function() {
                     })
                 }),
                 dicePool: new fields.SchemaField({
-                    value: new fields.NumberField({ required: true, integer: true, initial: 1, min: 1 })
+                    value: new fields.NumberField({ required: true, integer: true, initial: 0, min: 0 })
                 }),
                 diceModifier: new fields.NumberField({ required: true, integer: true, initial: 0 })
             };
         }
     }
 
-    // Register the data model class for the 'clan' Actor type.
+    // Registra la clase del modelo de datos para el tipo de Actor 'clan'.
     CONFIG.Actor.dataModels.clan = ClanDataModel;
 
     /**
-     * Defines the data model for the 'basic' Item.
+     * Define el modelo de datos para el Item 'basic'.
      */
     class BasicItemDataModel extends foundry.abstract.TypeDataModel {
         static defineSchema() {
@@ -229,17 +232,17 @@ Hooks.once("setup", function() {
         }
     }
 
-    // Register the data model class for the 'basic' Item type.
+    // Registra la clase del modelo de datos para el tipo de Item 'basic'.
     CONFIG.Item.dataModels.basic = BasicItemDataModel;
 });
 
 
-// 'ready' hook runs once Foundry VTT is fully loaded and ready to interact.
-// Here you can add additional logic that depends on the game being fully functional.
+// Hook 'ready' se ejecuta una vez que Foundry VTT está completamente cargado y listo para interactuar.
+// Aquí puedes añadir lógica adicional que dependa de que el juego esté completamente funcional.
 Hooks.once("ready", async function() {
     console.log("Goblin Quest System | Sistema listo.");
 
-    // --- Global DOM observer to detect pop-up windows ---
+    // --- Observador global del DOM para detectar ventanas emergentes ---
     console.log(`${SYSTEM_ID} | DEBUG GLOBAL: Iniciando observador global del DOM en document.body para detectar ventanas emergentes.`);
     const globalBodyObserver = new MutationObserver((mutationsList) => {
         for (const mutation of mutationsList) {
@@ -259,19 +262,19 @@ Hooks.once("ready", async function() {
         }
     });
     globalBodyObserver.observe(document.body, { childList: true, subtree: true });
-    // --- END Global DOM observer ---
+    // --- FIN Observador global del DOM ---
 
-    // The logic to apply the pause logo on startup has been removed.
+    // La lógica para aplicar el logo de pausa al inicio se ha eliminado.
 });
 
-// --- FUNCTION: Applies the banner to a compendium pop-up window ---
+// --- FUNCIÓN: Aplica el banner a una ventana emergente de compendio ---
 function applyCompendiumBanner(popoutSection) {
     const popoutId = popoutSection.id;
 
     console.log(`${SYSTEM_ID} | DEBUG: applyCompendiumBanner: Procesando ventana emergente de compendio: ${popoutId}`);
     
-    // Here we use a direct map for compendiumThemes, this should match your module.js if it's a separate module.
-    // For a system, banner paths should be relative to the system.
+    // Aquí usamos un mapa directo para compendiumThemes, esto debería coincidir con tu module.js si es un módulo separado.
+    // Para un sistema, los paths de los banners deberían ser relativos al sistema.
     const compendiumThemesMap = new Map([
         [`${SYSTEM_ID}.1-disciplinas-magia-y-dones`, `systems/${SYSTEM_ID}/art/banner1.png`], 
         [`${SYSTEM_ID}.2-clanes-tribus-y-estirpes`, `systems/${SYSTEM_ID}/art/banner2.jpg`],

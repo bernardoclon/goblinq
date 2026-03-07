@@ -1,15 +1,7 @@
-/* =================================================================
-   IMPORTS & CORE SETUP
-   ================================================================= */
-
 *, *::before, *::after {
     box-sizing: border-box;
 }
 @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=Inter:wght@400;700&family=Luckiest+Guy&family=Metamorphous&display=swap');
-
-/* =================================================================
-   MAIN ACTOR SHEET STYLES
-   ================================================================= */
 
 .goblin-quest-sheet {
     font-family: 'Metamorphous', cursive;    
@@ -28,10 +20,7 @@
     height: 100%;
 }
 
-/* =================================================================
-   GM PANEL & TASK SECTIONS
-   ================================================================= */
-
+/* GM Panel Content */
 .gm-panel {
     font-family: 'Metamorphous', cursive;
 }
@@ -84,10 +73,6 @@
     align-content: center;
     justify-content: center;
 }
-/* =================================================================
-   FORM ELEMENTS & INPUTS
-   ================================================================= */
-
 .goblin-quest-sheet input[type="text"],
 .goblin-quest-sheet input[type="number"],
 .goblin-quest-sheet textarea,
@@ -110,10 +95,6 @@
     padding-left: 6px;
     text-align: left;
 }
-/* =================================================================
-   CLAN INFO & HEADER
-   ================================================================= */
-
 .goblin-quest-sheet .clan-info-top {
     background: #1A4D1F;
     border-bottom: 2px solid #3AA044;
@@ -181,10 +162,6 @@
     color: #FFF;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
 }
-/* =================================================================
-   CHECKBOXES (HEALTH, TASKS)
-   ================================================================= */
-
 .goblin-quest-sheet .checkbox-group {
     display: flex;
     gap: 2px;
@@ -223,10 +200,6 @@
     background-image: url('../assets/goblin-negro.png');
     padding: 15px;
 }
-/* =================================================================
-   DICE POOL & ROLL BUTTON
-   ================================================================= */
-
 .goblin-quest-sheet .dice-pool {
     flex-grow: 1;
     display: flex;
@@ -245,10 +218,6 @@
     line-height: 30px;
     padding: 0 5px;
 }
-/* =================================================================
-   TABS
-   ================================================================= */
-
 .goblin-quest-sheet .goblin-tabs {
     padding: 6px 8px;
     border-bottom: 2px solid #3AA044;
@@ -273,10 +242,6 @@
     background: #4CAF50;
     box-shadow: 0 -2px 6px rgba(0,0,0,0.2);
 }
-/* =================================================================
-   GOBLIN CARDS & DETAILS
-   ================================================================= */
-
 .goblin-quest-sheet .goblin-details-section {
     padding: 10px 15px;
     background: #4CAF50;
@@ -543,7 +508,7 @@
     width: 100%;
     margin-top: 5px;
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 120px 1fr;
     align-items: center;
     gap: 10px;
 }
@@ -571,10 +536,7 @@
     flex: 1;
 }
 
-/* =================================================================
-   CHAT MESSAGE & DICE RESULTS
-   ================================================================= */
-
+/* Estilos para los resultados de dados en el chat */
 .dice-results-container {
     display: flex;
     flex-wrap: wrap;
@@ -585,6 +547,7 @@
     margin-bottom: 10px;
 }
 
+/* Dice Box Styles - Numbers in dice-like boxes */
 .dice-results-container {
     display: flex;
     gap: 8px;
@@ -618,6 +581,7 @@
     transform: scale(1.05);
 }
 
+/* Special dice results */
 .dice-box.dice-success {
     background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
     color: white;
@@ -663,19 +627,20 @@
 }
 
 .roll-summary.success {
-    color: #006400;
+    color: #006400; /* Verde oscuro */
     background-color: #e8f5e9;
     border: 1px solid #a5d6a7;
     font-size: 0.8em;
 }
 
 .roll-summary.wound {
-    color: #b71c1c;
+    color: #b71c1c; /* Rojo oscuro */
     background-color: #ffebee;
     border: 1px solid #ef9a9a;
     font-size: 0.8em;
 }
 
+/* Estilos para los mensajes de tirada en el chat */
 .chat-message .message-header .goblin-roll{
     display: flex;
     flex-direction: column;
@@ -698,10 +663,10 @@
     font-weight: bold;
 }
 
-/* =================================================================
-   GM TASK PANEL BUTTON & STYLES
-   ================================================================= */
 
+
+
+/* GM Task Panel Button */
 .gm-task-panel-btn {
     background: linear-gradient(180deg, #9CCC65 0%, #4CAF50 100%);
     color: white;
@@ -720,6 +685,7 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
 
+/* GM Panel Content */
 .gm-panel .tasks-section {
     padding: 5px;
     display: flex;
@@ -867,6 +833,7 @@
     margin: 0;
 }
 
+/* Difficulty Section Styles */
 .gm-panel .difficulty-section {
     background: rgba(26, 77, 31, 0.9);
     border: 1px solid #4CAF50;
@@ -1074,36 +1041,4 @@
 
 .goblin-quest-sheet .objective-sectionp {
     width: 100% !important; 
-}
-
-/* =================================================================
-   DIALOG STYLES
-   ================================================================= */
-
-.dialog .dialog-buttons {
-    gap: 5px;
-    align-items: center;
-}
-
-.dialog .dialog-buttons button {
-    background: linear-gradient(180deg, #9CCC65 0%, #4CAF50 100%);
-    color: white;
-    border: 1px solid #388E3C;
-    font-family: 'Metamorphous', cursive;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    height: 38px;
-    min-height: 38px;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 0 12px;
-    font-size: 14px;
-    line-height: 1;
-}
-
-.dialog .dialog-buttons button:hover {
-    background: linear-gradient(180deg, #4CAF50 0%, #9CCC65 100%);
-    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
 }

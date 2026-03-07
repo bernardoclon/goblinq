@@ -1,21 +1,21 @@
 Hooks.on("ready", () => {
-    // Set up an observer to detect when the pause screen appears
+    // Configurar un observador para detectar cuando aparece el pause screen
     const observer = new MutationObserver((mutations) => {
         const pauseScreen = document.getElementById("pause");
         if (pauseScreen) {
             const img = pauseScreen.querySelector("img");
             if (img && !img.classList.contains('customized')) {
                 img.src = "systems/goblin-quest-system/assets/logo.png";
-                img.classList.add('customized'); // Mark as modified
+                img.classList.add('customized'); // Marcar como modificado
                 
-                // Optional: Change the text
+                // Opcional: Cambiar el texto
                 const caption = pauseScreen.querySelector("figcaption");
                 if (caption) caption.textContent = "Juego en Pausa";
             }
         }
     });
 
-    // Observe changes in the body
+    // Observar cambios en el body
     observer.observe(document.body, {
         childList: true,
         subtree: true
